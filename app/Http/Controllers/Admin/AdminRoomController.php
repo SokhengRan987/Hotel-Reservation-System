@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class AdminRoomController extends Controller
 {
@@ -92,8 +93,8 @@ class AdminRoomController extends Controller
         // Handle image upload
         if ($request->hasFile('image')) {
             // Delete old image if exists
-            if ($room->image && \Storage::disk('public')->exists($room->image)) {
-                \Storage::disk('public')->delete($room->image);
+            if ($room->image && Storage::disk('public')->exists($room->image)) {
+                Storage::disk('public')->delete($room->image);
             }
             $imagePath = $request->file('image')->store('rooms', 'public');
             $data['image'] = $imagePath;
@@ -112,8 +113,8 @@ class AdminRoomController extends Controller
         $room = \App\Models\Room::findOrFail($id);
         
         // Delete image if exists
-        if ($room->image && \Storage::disk('public')->exists($room->image)) {
-            \Storage::disk('public')->delete($room->image);
+        if ($room->image && Storage::disk('public')->exists($room->image)) {
+            Storage::disk('public')->delete($room->image);
         }
         
         $room->delete();

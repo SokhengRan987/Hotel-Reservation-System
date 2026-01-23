@@ -138,9 +138,7 @@
                                         $statusColor = $booking->payment->status === 'completed' ? '#155724' : '#856404';
                                         $statusText = ucfirst($booking->payment->status);
                                     @endphp
-                                    <span style="background-color: {{ $statusBg }}; color: {{ $statusColor }}; padding: 5px 10px; border-radius: 5px; font-weight: 600; font-size: 0.9rem; display: inline-block;">
-                                        {{ $statusText }}
-                                    </span>
+                                    <span style="background-color: {{ $statusBg }}; color: {{ $statusColor }}; padding: 5px 10px; border-radius: 5px; font-weight: bold; font-size: 0.9rem; display: inline-block;">{{ $statusText }}</span>
                                 </p>
                             </div>
                         </div>
