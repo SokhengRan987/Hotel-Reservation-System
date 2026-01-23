@@ -31,7 +31,7 @@ class AdminPaymentController extends Controller
     public function update(Request $request, Payment $payment)
     {
         $validated = $request->validate([
-            'status' => 'required|in:pending,completed,failed,refunded'
+            'status' => 'required|in:pending,paid,failed,refunded'
         ]);
 
         $payment->update($validated);
