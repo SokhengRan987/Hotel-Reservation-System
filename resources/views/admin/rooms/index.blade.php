@@ -16,6 +16,7 @@
 <table style="width:100%; border-collapse:collapse;">
     <thead>
         <tr style="background:#f3f4f6;">
+            <th style="padding:10px; text-align:left;">Image</th>
             <th style="padding:10px; text-align:left;">Number</th>
             <th style="padding:10px; text-align:left;">Type</th>
             <th style="padding:10px; text-align:left;">Price</th>
@@ -26,6 +27,13 @@
     <tbody>
         @foreach($rooms as $room)
             <tr>
+                <td style="padding:10px;">
+                    @if($room->image)
+                        <img src="{{ asset('storage/' . $room->image) }}" alt="Room {{ $room->number }}" style="width:80px; height:80px; object-fit:cover; border-radius:4px;" />
+                    @else
+                        <div style="width:80px; height:80px; background:#e5e7eb; border-radius:4px; display:flex; align-items:center; justify-content:center; color:#9ca3af; font-size:12px;">No image</div>
+                    @endif
+                </td>
                 <td style="padding:10px;">{{ $room->number }}</td>
                 <td style="padding:10px;">{{ $room->type }}</td>
                 <td style="padding:10px;">${{ number_format($room->price,2) }}</td>

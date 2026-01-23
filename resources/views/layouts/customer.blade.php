@@ -157,7 +157,7 @@
                 <span class="brand-name">Sunset Heaven</span>
             </div>
             <div class="d-none d-md-flex">
-                <a href="{{ route('home') }}" class="nav-link">Home</a>
+               <a href="{{ route('customer.rooms.index') }}" class="nav-link">Home</a>
                 <a href="{{ route('customer.rooms.index') }}" class="nav-link">Our Rooms</a>
                 <a href="#features" class="nav-link">Amenities</a>
             </div>

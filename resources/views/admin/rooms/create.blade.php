@@ -16,7 +16,7 @@
     </div>
 @endif
 
-<form action="{{ route('admin.rooms.store') }}" method="POST">
+<form action="{{ route('admin.rooms.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
     <div style="margin-bottom:10px;">
         <label>Number</label><br>
@@ -41,6 +41,11 @@
     <div style="margin-bottom:10px;">
         <label>Description</label><br>
         <textarea name="description">{{ old('description') }}</textarea>
+    </div>
+    <div style="margin-bottom:10px;">
+        <label>Room Image</label><br>
+        <input type="file" name="image" accept="image/*" />
+        <small style="color:#666;">JPG, PNG, GIF. Max 2MB.</small>
     </div>
     <button class="btn-small">Create Room</button>
 </form>

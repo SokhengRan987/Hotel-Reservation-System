@@ -16,7 +16,7 @@
     </div>
 @endif
 
-<form action="{{ route('admin.rooms.update', $room->id) }}" method="POST">
+<form action="{{ route('admin.rooms.update', $room->id) }}" method="POST" enctype="multipart/form-data">
     @csrf
     @method('PUT')
     <div style="margin-bottom:10px;">
@@ -42,6 +42,17 @@
     <div style="margin-bottom:10px;">
         <label>Description</label><br>
         <textarea name="description">{{ old('description', $room->description) }}</textarea>
+    </div>
+    <div style="margin-bottom:10px;">
+        <label>Room Image</label><br>
+        @if($room->image)
+            <div style="margin-bottom:10px;">
+                <img src="{{ asset('storage/' . $room->image) }}" alt="Room" style="max-width:200px; height:auto; border-radius:6px;" />
+                <p style="color:#666; font-size:12px;">Current image</p>
+            </div>
+        @endif
+        <input type="file" name="image" accept="image/*" />
+        <small style="color:#666;">JPG, PNG, GIF. Max 2MB. Leave empty to keep current image.</small>
     </div>
     <button class="btn-small">Save Changes</button>
 </form>

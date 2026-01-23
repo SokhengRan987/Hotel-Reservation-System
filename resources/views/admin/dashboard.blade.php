@@ -1,261 +1,48 @@
-
 @extends('layouts.admin')
 
-@section('content')
-    <h1>Admin Dashboard</h1>
-
+@section('title', 'Dashboard')
 @section('page-title', 'Dashboard')
 
 @section('content')
-
-<style>
-    /* Stats Grid */
-    .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 20px;
-        margin-bottom: 30px;
-    }
-
-    .stat-card {
-        background: var(--white);
-        border-radius: 10px;
-        padding: 20px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        border-left: 4px solid var(--primary-purple);
-        transition: transform 0.2s;
-    }
-
-    .stat-card:hover {
-        transform: translateY(-2px);
-    }
-
-    .stat-card.rooms {
-        border-left-color: #10b981;
-    }
-
-    .stat-card.revenue {
-        border-left-color: #f59e0b;
-    }
-
-    .stat-card.payments {
-        border-left-color: #ef4444;
-    }
-
-    .stat-label {
-        font-size: 13px;
-        color: #6b7280;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        margin-bottom: 8px;
-    }
-
-    .stat-value {
-        font-size: 32px;
-        font-weight: 700;
-        margin-bottom: 10px;
-    }
-
-    .stat-change {
-        font-size: 12px;
-        color: #10b981;
-    }
-
-    .stat-change.negative {
-        color: #ef4444;
-    }
-
-    /* Content Grid */
-    .content-grid {
-        display: grid;
-        grid-template-columns: 2fr 1fr;
-        gap: 20px;
-        margin-bottom: 30px;
-    }
-
-    @media (max-width: 1024px) {
-        .content-grid {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    /* Card */
-    .card {
-        background: var(--white);
-        border-radius: 10px;
-        padding: 20px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    }
-
-    .card-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-        border-bottom: 1px solid var(--gray-medium);
-        padding-bottom: 15px;
-    }
-
-    .card-title {
-        font-size: 18px;
-        font-weight: 600;
-    }
-
-    .btn-small {
-        background: var(--primary-purple);
-        color: var(--white);
-        border: none;
-        padding: 8px 16px;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 13px;
-        transition: background 0.3s;
-    }
-
-    .btn-small:hover {
-        background: var(--purple-dark);
-    }
-
-    /* Table */
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 14px;
-    }
-
-    th {
-        background: var(--gray-light);
-        padding: 12px;
-        text-align: left;
-        font-weight: 600;
-        border-bottom: 2px solid var(--gray-medium);
-    }
-
-    td {
-        padding: 12px;
-        border-bottom: 1px solid var(--gray-medium);
-    }
-
-    tr:hover {
-        background: var(--gray-light);
-    }
-
-    /* Badge */
-    .badge {
-        display: inline-block;
-        padding: 4px 12px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 600;
-    }
-
-    .badge.confirmed {
-        background: #d1fae5;
-        color: #065f46;
-    }
-
-    .badge.pending {
-        background: #fef3c7;
-        color: #92400e;
-    }
-
-    .badge.cancelled {
-        background: #fee2e2;
-        color: #7f1d1d;
-    }
-
-    .badge.active {
-        background: #dbeafe;
-        color: #0c2d6b;
-    }
-
-    /* Action Buttons */
-    .action-btn {
-        background: none;
-        border: none;
-        color: var(--primary-purple);
-        cursor: pointer;
-        margin-right: 8px;
-        font-size: 14px;
-        padding: 4px 8px;
-        transition: color 0.3s;
-    }
-
-    .action-btn:hover {
-        color: var(--purple-dark);
-    }
-
-    .action-btn.delete {
-        color: #ef4444;
-    }
-
-    .action-btn.delete:hover {
-        color: #c4161c;
-    }
-
-    /* Activity */
-    .activity-item {
-        padding: 15px 0;
-        border-bottom: 1px solid var(--gray-medium);
-    }
-
-    .activity-item:last-child {
-        border-bottom: none;
-    }
-
-    .activity-time {
-        font-size: 12px;
-        color: #9ca3af;
-        margin-bottom: 5px;
-    }
-
-    .activity-text {
-        font-size: 14px;
-    }
-
-    .activity-dot {
-        display: inline-block;
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: var(--primary-purple);
-        margin-right: 8px;
-    }
-</style>
-
-<!-- Stats Grid -->
-<div class="stats-grid">
-    <div class="stat-card">
-        <div class="stat-label">Total Bookings</div>
-        <div class="stat-value">342</div>
-        <div class="stat-change">↑ 12% from last month</div>
-    </div>
-    <div class="stat-card rooms">
-        <div class="stat-label">Available Rooms</div>
-        <div class="stat-value">28</div>
-        <div class="stat-change">↓ 5% occupied</div>
-    </div>
-    <div class="stat-card revenue">
-        <div class="stat-label">Revenue</div>
-        <div class="stat-value">$45.2K</div>
-        <div class="stat-change">↑ 8% growth</div>
-    </div>
-    <div class="stat-card payments">
-        <div class="stat-label">Pending Payments</div>
-        <div class="stat-value">$8.5K</div>
-        <div class="stat-change negative">↑ 3% overdue</div>
-    </div>
-</div>
-
-<!-- Main Content -->
-<div class="content-grid">
-    <!-- Recent Bookings -->
-    <div class="card">
-        <div class="card-header">
-            <h2 class="card-title">Recent Bookings</h2>
-            <button class="btn-small">View All</button>
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+        <!-- Total Bookings Card -->
+        <div class="stat-card">
+            <div class="stat-label">Total Bookings</div>
+            <div class="stat-value">{{ $totalBookings ?? 342 }}</div>
+            <div class="stat-change positive">↑ 12% from last month</div>
         </div>
-        <table>
+
+        <!-- Available Rooms Card -->
+        <div class="stat-card stat-card-success">
+            <div class="stat-label">Available Rooms</div>
+            <div class="stat-value">{{ $availableRooms ?? 28 }}</div>
+            <div class="stat-change positive">↑ 5% occupied</div>
+        </div>
+
+        <!-- Revenue Card -->
+        <div class="stat-card stat-card-warning">
+            <div class="stat-label">Revenue</div>
+            <div class="stat-value">${{ $revenue ?? '45.2' }}K</div>
+            <div class="stat-change positive">↑ 8% growth</div>
+        </div>
+
+        <!-- Pending Payments Card -->
+        <div class="stat-card stat-card-danger">
+            <div class="stat-label">Pending Payments</div>
+            <div class="stat-value">${{ $pendingPayments ?? '8.5' }}K</div>
+            <div class="stat-change negative">↑ 3% overdue</div>
+        </div>
+    </div>
+
+    <!-- Recent Bookings Section -->
+    <div class="section">
+        <div class="section-header">
+            <h2 class="section-title">Recent Bookings</h2>
+            <a href="/admin/bookings" class="btn btn-primary">View All</a>
+        </div>
+        
+        <table class="table">
             <thead>
                 <tr>
                     <th>Guest Name</th>
@@ -270,84 +57,109 @@
                     <td>John Smith</td>
                     <td>Room 301</td>
                     <td>Dec 5, 2024</td>
-                    <td><span class="badge confirmed">Confirmed</span></td>
+                    <td><span class="badge badge-success">Confirmed</span></td>
                     <td>
-                        <button class="action-btn">Edit</button>
-                        <button class="action-btn delete">Delete</button>
+                        <a href="#" class="btn btn-secondary">Edit</a>
+                        <a href="#" class="btn btn-secondary" style="color: #ef4444;">Delete</a>
                     </td>
                 </tr>
                 <tr>
                     <td>Sarah Johnson</td>
                     <td>Room 215</td>
                     <td>Dec 6, 2024</td>
-                    <td><span class="badge pending">Pending</span></td>
+                    <td><span class="badge badge-success">Confirmed</span></td>
                     <td>
-                        <button class="action-btn">Edit</button>
-                        <button class="action-btn delete">Delete</button>
+                        <a href="#" class="btn btn-secondary">Edit</a>
+                        <a href="#" class="btn btn-secondary" style="color: #ef4444;">Delete</a>
                     </td>
                 </tr>
                 <tr>
                     <td>Michael Brown</td>
-                    <td>Room 405</td>
-                    <td>Dec 4, 2024</td>
-                    <td><span class="badge confirmed">Confirmed</span></td>
+                    <td>Room 410</td>
+                    <td>Dec 7, 2024</td>
+                    <td><span class="badge badge-warning">Pending</span></td>
                     <td>
-                        <button class="action-btn">Edit</button>
-                        <button class="action-btn delete">Delete</button>
+                        <a href="#" class="btn btn-secondary">Edit</a>
+                        <a href="#" class="btn btn-secondary" style="color: #ef4444;">Delete</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Emma Davis</td>
+                    <td>Room 105</td>
+                    <td>Dec 8, 2024</td>
+                    <td><span class="badge badge-success">Confirmed</span></td>
+                    <td>
+                        <a href="#" class="btn btn-secondary">Edit</a>
+                        <a href="#" class="btn btn-secondary" style="color: #ef4444;">Delete</a>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
 
-    <!-- Sidebar -->
-    <div>
-        <!-- Room Status -->
-        <div class="card" style="margin-bottom: 20px;">
-            <div class="card-header">
-                <h2 class="card-title">Room Status</h2>
-            </div>
-            <table style="font-size: 13px;">
-                <tbody>
-                    <tr>
-                        <td><span class="badge active">Active</span></td>
-                        <td style="text-align: right; font-weight: 600;">45</td>
-                    </tr>
-                    <tr>
-                        <td><span class="badge pending">Maintenance</span></td>
-                        <td style="text-align: right; font-weight: 600;">3</td>
-                    </tr>
-                    <tr>
-                        <td><span class="badge confirmed">Available</span></td>
-                        <td style="text-align: right; font-weight: 600;">28</td>
-                    </tr>
-                    <tr>
-                        <td><span class="badge cancelled">Occupied</span></td>
-                        <td style="text-align: right; font-weight: 600;">24</td>
-                    </tr>
-                </tbody>
-            </table>
+    <!-- Room Status Section -->
+    <div class="section">
+        <div class="section-header">
+            <h2 class="section-title">Room Status</h2>
+            <a href="/admin/rooms" class="btn btn-primary">Manage Rooms</a>
         </div>
 
-        <!-- Recent Activity -->
-        <div class="card">
-            <div class="card-header">
-                <h2 class="card-title">Recent Activity</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+            <div style="padding: 16px; background: #f0fdf4; border-radius: 8px; border-left: 4px solid #10b981;">
+                <div style="font-size: 12px; color: #065f46; text-transform: uppercase; font-weight: 600; margin-bottom: 8px;">Active</div>
+                <div style="font-size: 28px; font-weight: 700; color: #10b981;">45</div>
+                <div style="font-size: 12px; color: #059669; margin-top: 4px;">Rooms occupied</div>
             </div>
-            <div class="activity-item">
-                <div class="activity-time">2 hours ago</div>
-                <div class="activity-text"><span class="activity-dot"></span>New booking from John Smith</div>
+
+            <div style="padding: 16px; background: #fef3c7; border-radius: 8px; border-left: 4px solid #f59e0b;">
+                <div style="font-size: 12px; color: #92400e; text-transform: uppercase; font-weight: 600; margin-bottom: 8px;">Maintenance</div>
+                <div style="font-size: 28px; font-weight: 700; color: #f59e0b;">3</div>
+                <div style="font-size: 12px; color: #b45309; margin-top: 4px;">Under repair</div>
             </div>
-            <div class="activity-item">
-                <div class="activity-time">4 hours ago</div>
-                <div class="activity-text"><span class="activity-dot"></span>Payment received: $1,200</div>
-            </div>
-            <div class="activity-item">
-                <div class="activity-time">6 hours ago</div>
-                <div class="activity-text"><span class="activity-dot"></span>Room 215 maintenance completed</div>
+
+            <div style="padding: 16px; background: #dbeafe; border-radius: 8px; border-left: 4px solid #2563eb;">
+                <div style="font-size: 12px; color: #1e40af; text-transform: uppercase; font-weight: 600; margin-bottom: 8px;">Available</div>
+                <div style="font-size: 28px; font-weight: 700; color: #2563eb;">28</div>
+                <div style="font-size: 12px; color: #1d4ed8; margin-top: 4px;">Ready for booking</div>
             </div>
         </div>
     </div>
-</div>
 
+    <!-- Quick Actions -->
+    <div class="section">
+        <div class="section-header">
+            <h2 class="section-title">Quick Actions</h2>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;">
+            <a href="/admin/bookings/create" class="btn btn-primary" style="justify-content: center; padding: 16px;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px;">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                New Booking
+            </a>
+            <a href="/admin/guests" class="btn btn-primary" style="justify-content: center; padding: 16px;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px;">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                View Guests
+            </a>
+            <a href="/admin/payments" class="btn btn-primary" style="justify-content: center; padding: 16px;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px;">
+                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                    <line x1="1" y1="10" x2="23" y2="10"></line>
+                </svg>
+                Manage Payments
+            </a>
+            <a href="/admin/reports" class="btn btn-primary" style="justify-content: center; padding: 16px;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px;">
+                    <line x1="12" y1="2" x2="12" y2="22"></line>
+                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                </svg>
+                Reports
+            </a>
+        </div>
+    </div>
 @endsection

@@ -1,32 +1,32 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-
-use App\Models\User; // For type hint in redirect
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Customer\RoomController;
 use App\Http\Controllers\Customer\BookingController;
 use App\Http\Controllers\Customer\PaymentWebhookController;
-
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminRoomController;
 use App\Http\Controllers\Admin\AdminBookingController;
 use App\Http\Controllers\Admin\AdminPaymentController;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
-| ROLE-BASED REDIRECT AFTER LOGIN
+| ROLE REDIRECT
 |--------------------------------------------------------------------------
 */
 Route::get('/redirect', function () {
-    /** @var User|null $user */
-    $user = auth()->user();
+    /** @var \App\Models\User|null $user */
+        $user = auth()->user();
 
-    if ($user && $user->isAdmin()) {
-        return redirect()->route('admin.dashboard');
-    }
+        if ($user && $user->isAdmin()) {
 
-    return redirect()->route('home');
+                return redirect()->route('admin.dashboard');
+            }
+
+    return redirect()->route('customer.rooms.index');
 })->middleware('auth');
 
 /*
@@ -34,39 +34,71 @@ Route::get('/redirect', function () {
 | PUBLIC ROUTES
 |--------------------------------------------------------------------------
 */
-
-// Home page / room listing
-Route::get('/', [RoomController::class, 'index'])->name('home');
-
-// Room details
-Route::prefix('rooms')->name('customer.rooms.')->group(function () {
-    Route::get('/', [RoomController::class, 'index'])->name('index');
-    Route::get('/{room}', [RoomController::class, 'show'])->name('show');
-});
-
+// ...existing code...
+Route::get('/', [RoomController::class, 'index']) ->name('home')   
+->name('customer.rooms.index');
+Route::get('/', [RoomController::class, 'index'])
+   ->name('home');
+ 
+ Route::prefix('rooms')
+     ->name('customer.rooms.')
+     ->group(function () {
+       // index route so route('customer.rooms.index') exists
+      Route::get('/', [RoomController::class, 'index'])->name('index');
+         Route::get('/{room}', [RoomController::class, 'show'])
+             ->name('show');
+         Route::get('/{room}/disabled-dates', [RoomController::class, 'getDisabledDates'])
+             ->name('disabled-dates');
+     });
+ 
 /*
 |--------------------------------------------------------------------------
-| CUSTOMER ROUTES (AUTH REQUIRED)
+| CUSTOMER ROUTES (AUTH)
+|--------------------------------------------------------------------------
+*/
+Route::middleware('auth')
+    ->prefix('customer')
+    ->name('customer.')
+    ->group(function () {
+
+        Route::get('/dashboard', fn () => view('dashboard'))
+            ->name('dashboard');
+
+        // BOOKINGS
+        Route::post('/bookings', [BookingController::class, 'store'])
+            ->name('bookings.store');
+
+        // Protected booking routes - ensure user owns the booking
+        Route::middleware('own_booking')->group(function () {
+            Route::get('/bookings/{booking}', [BookingController::class, 'show'])
+                ->name('bookings.show');
+
+            Route::get('/bookings/{booking}/success', function ($booking) {
+                // Fetch the actual Booking model if only ID was passed
+                if (is_string($booking)) {
+                    $booking = \App\Models\Booking::findOrFail($booking);
+                }
+                return view('customer.bookings.success', compact('booking'));
+            })->name('bookings.success');
+        });
+
+        // PROFILE
+        Route::get('/profile', [ProfileController::class, 'edit'])
+            ->name('profile.edit');
+
+        Route::patch('/profile', [ProfileController::class, 'update'])
+            ->name('profile.update');
+
+        Route::delete('/profile', [ProfileController::class, 'destroy'])
+            ->name('profile.destroy');
+    });
+
+    /*
+|--------------------------------------------------------------------------
+| PUBLIC PROFILE ROUTES (for admin/navigation and other layouts)
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth')->group(function () {
-
-    // Dashboard for normal users (optional)
-    Route::get('/dashboard', function () {
-        return view('dashboard'); // create resources/views/dashboard.blade.php
-    })->name('dashboard');
-
-    // Booking routes
-    Route::get('/bookings/create', [BookingController::class, 'create'])
-        ->name('customer.bookings.create');
-
-    Route::post('/bookings', [BookingController::class, 'store'])
-        ->name('customer.bookings.store');
-
-    Route::get('/bookings/{booking}', [BookingController::class, 'show'])
-        ->name('customer.bookings.show');
-
-    // Profile routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -74,7 +106,7 @@ Route::middleware('auth')->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| ADMIN ROUTES (AUTH + ADMIN MIDDLEWARE)
+| ADMIN ROUTES
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth', 'admin'])
@@ -82,30 +114,27 @@ Route::middleware(['auth', 'admin'])
     ->name('admin.')
     ->group(function () {
 
-        // Dashboard
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])
             ->name('dashboard');
 
-        // Room management
         Route::resource('rooms', AdminRoomController::class);
-
-        // Booking management
         Route::resource('bookings', AdminBookingController::class);
-
-        // Payment management
         Route::resource('payments', AdminPaymentController::class);
-});
+       
+    });
 
 /*
 |--------------------------------------------------------------------------
-| STRIPE WEBHOOK (PUBLIC)
+| STRIPE WEBHOOK (PUBLIC, NO CSRF)
+|
 |--------------------------------------------------------------------------
 */
-Route::post('/webhooks/stripe', [PaymentWebhookController::class, 'handle']);
+Route::post('/webhooks/stripe', [PaymentWebhookController::class, 'handle'])
+    ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
 
 /*
 |--------------------------------------------------------------------------
-| AUTH ROUTES (Laravel Breeze / Fortify)
+| AUTH ROUTES
 |--------------------------------------------------------------------------
 */
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

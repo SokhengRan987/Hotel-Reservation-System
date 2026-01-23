@@ -51,9 +51,10 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-
-        // Your custom admin middleware (add only this)
-         'admin' => \App\Http\Middleware\AdminMiddleware::class,
+          
+        // Custom middleware
+        'admin' => \App\Http\Middleware\AdminMiddleware::class,
+        'own_booking' => \App\Http\Middleware\EnsureUserOwnBooking::class,
 
     ];
 }

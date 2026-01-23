@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 
 class AdminPaymentController extends Controller
@@ -12,54 +13,38 @@ class AdminPaymentController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+        $payments = Payment::with(['booking.user', 'booking.room'])->latest()->paginate(15);
+        return view('admin.payments.index', compact('payments'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Payment $payment)
     {
-        //
+        return view('admin.payments.edit', compact('payment'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Payment $payment)
     {
-        //
+        $validated = $request->validate([
+            'status' => 'required|in:pending,completed,failed,refunded'
+        ]);
+
+        $payment->update($validated);
+
+        return redirect()->route('admin.payments.index')->with('success', 'Payment status updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Payment $payment)
     {
-        //
+        $payment->delete();
+        return redirect()->route('admin.payments.index')->with('success', 'Payment deleted successfully.');
     }
 }

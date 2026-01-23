@@ -36,9 +36,16 @@ class AdminRoomController extends Controller
             'price' => 'required|numeric|min:0',
             'capacity' => 'required|integer|min:1',
             'features' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $data['features'] = $data['features'] ? array_values(array_filter(array_map('trim', explode(',', $data['features'])))) : null;
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('rooms', 'public');
+            $data['image'] = $imagePath;
+        }
 
         \App\Models\Room::create($data);
 
@@ -77,9 +84,20 @@ class AdminRoomController extends Controller
             'price' => 'required|numeric|min:0',
             'capacity' => 'required|integer|min:1',
             'features' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $data['features'] = $data['features'] ? array_values(array_filter(array_map('trim', explode(',', $data['features'])))) : null;
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($room->image && \Storage::disk('public')->exists($room->image)) {
+                \Storage::disk('public')->delete($room->image);
+            }
+            $imagePath = $request->file('image')->store('rooms', 'public');
+            $data['image'] = $imagePath;
+        }
 
         $room->update($data);
 
@@ -92,6 +110,12 @@ class AdminRoomController extends Controller
     public function destroy(string $id)
     {
         $room = \App\Models\Room::findOrFail($id);
+        
+        // Delete image if exists
+        if ($room->image && \Storage::disk('public')->exists($room->image)) {
+            \Storage::disk('public')->delete($room->image);
+        }
+        
         $room->delete();
 
         return redirect()->route('admin.rooms.index')->with('success', 'Room deleted successfully.');

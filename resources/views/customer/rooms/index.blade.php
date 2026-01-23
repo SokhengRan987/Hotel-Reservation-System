@@ -1,6 +1,13 @@
 @extends('layouts.customer')
 
 @section('content')
+
+<!-- Room List Section '
+  Room number
+    Price
+    Guests
+    "Book Now" button-->
+
 <div style="background: linear-gradient(135deg, #e3f2fd 0%, #fff3e0 100%); padding: 80px 0;">
     <div class="container">
         <!-- Page Header -->
