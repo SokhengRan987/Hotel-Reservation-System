@@ -11,21 +11,22 @@
     <style>
         /* ===== NAVBAR ===== */
         .custom-navbar {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            background:skyblue;
             padding: 15px 0;
             border-bottom: 3px solid #ff9800;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
         
         .custom-navbar .nav-logo {
-            height: 50px;
+            height: 85px;
             filter: brightness(1.1);
         }
         
         .custom-navbar .brand-name {
-            color: #fff;
-            font-weight: 700;
-            font-size: 1.5rem;
+            font-family: 'Times New Roman', Times, serif;
+            color:black;
+            font-weight: 500;
+            font-size: 1.2rem;
             margin-left: 12px;
             letter-spacing: 1px;
         }
@@ -68,7 +69,7 @@
 
         /* ===== FOOTER ===== */
         .footer {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            background: skyblue;
             padding: 50px 0 20px;
             color: white;
             border-top: 3px solid #ff9800;
@@ -159,7 +160,7 @@
             <div class="d-none d-md-flex">
                <a href="{{ route('customer.rooms.index') }}" class="nav-link">Home</a>
                 <a href="{{ route('customer.rooms.index') }}" class="nav-link">Our Rooms</a>
-                <a href="#features" class="nav-link">Amenities</a>
+                <a href="#features" class="nav-link">Booking Tracker</a>
             </div>
             <div>
                   @auth
