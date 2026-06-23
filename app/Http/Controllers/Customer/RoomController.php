@@ -8,11 +8,21 @@ use Carbon\Carbon;
 
 class RoomController extends Controller
 {
-    public function index()
-    {
-        $rooms = Room::paginate(12);
-        return view('customer.rooms.index', compact('rooms'));
-    }
+
+          
+    /**
+     * to know the available rooms we need to check the bookings for each room and see if there are any bookings that overlap with the current date or the date range we want to check. If there are no overlapping bookings, then the room is available. We can use Eloquent relationships to check the bookings for each room and filter out the rooms that are not available.
+     */
+       public function index()
+{
+    $rooms = Room::with(['bookings' => function($q) {
+        $q->whereIn('status', ['pending', 'confirmed', 'checked_in'])
+          ->where('start_date', '<', now()->addDays(1))
+          ->where('end_date', '>', now());
+        }])->paginate(12);
+
+    return view('customer.rooms.index', compact('rooms'));
+}
 
     public function show(Room $room)
     {

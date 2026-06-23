@@ -1,3 +1,8 @@
+
+@section('head')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+@endsection
+
 @extends('layouts.customer')
 
 @section('content')
@@ -41,7 +46,20 @@
                     <!-- Info -->
                     <div style="background:#f8f9fa; padding:20px; border-left:4px solid #ff9800; border-radius:10px; margin-bottom:25px;">
                         <strong>Max Guests:</strong> {{ $room->capacity ?? 1 }} <br>
-                        <strong>Status:</strong> <span style="color:#4caf50;">Available</span>
+                        {{-- REPLACE with this --}}
+                            @php
+                                $isBooked = $room->bookings()
+                                    ->whereIn('status', ['pending', 'confirmed', 'checked_in'])
+                                    ->where('start_date', '<', now()->addDays(1))
+                                    ->where('end_date', '>', now())
+                                    ->exists();
+                            @endphp
+                            <strong>Status:</strong>
+                            @if($isBooked)
+                                <span style="color:#e53935;">Booked</span>
+                            @else
+                                <span style="color:#4caf50;">Available</span>
+                            @endif
                     </div>
 
                     <!-- BOOKING FORM -->
@@ -204,11 +222,12 @@ function submitBooking(e) {
     btn.disabled = true;
     btn.innerHTML = 'Processing...';
 
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     fetch("{{ route('customer.bookings.store') }}", {
         method: "POST",
         credentials: "same-origin",
         headers: {
-            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'X-CSRF-TOKEN': csrfToken,
             'Accept': 'application/json'
         },
         body: data
@@ -219,7 +238,7 @@ function submitBooking(e) {
         return json;
     })
     .then(res => {
-        window.location.href = res.checkout_url;
+        window.location.href = res.redirect;
     })
     .catch(err => {
         console.error('Booking Error:', err); // Log to browser console for debugging

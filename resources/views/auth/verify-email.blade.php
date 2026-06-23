@@ -1,7 +1,8 @@
 <x-guest-layout>
     <style>
         body {
-            background: linear-gradient(135deg, #001a4d 0%, #003d99 50%, #001a4d 100%);
+            background:rgb(211, 183, 113);
+
             background-attachment: fixed;
             min-height: 100vh;
             position: relative;

@@ -1,7 +1,7 @@
 <x-guest-layout>
     <style>
         body {
-            background: linear-gradient(135deg, #001a4d 0%, #003d99 50%, #001a4d 100%);
+            background:rgb(96, 185, 205);
             background-attachment: fixed;
             min-height: 100vh;
             position: relative;
@@ -15,22 +15,8 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-image: whitesmoke 
-                repeating-linear-gradient(
-                    90deg,
-                    rgba(255,255,255,0.03) 0px,
-                    rgba(255,255,255,0.03) 1px,
-                    transparent 1px,
-                    transparent 40px
-                ),
-                repeating-linear-gradient(
-                    0deg,
-                    rgba(255,255,255,0.03) 0px,
-                    rgba(255,255,255,0.03) 1px,
-                    transparent 1px,
-                    transparent 40px
-                )
-               ;
+            background-image:rgb(96, 185, 205);
+                
             pointer-events: none;
             z-index: 1;
         }
@@ -88,7 +74,7 @@
             width: 100%;
             padding: 16px 20px;
             padding-left: 45px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: rgb(96, 185, 205);
             border-radius: 50px;
             background: rgba(255, 255, 255, 0.1);
             color: white;
@@ -156,7 +142,7 @@
         }
 
         .forgot-password:hover {
-            color: rgba(255, 200, 100, 0.9);
+            color: rgba(46, 180, 238, 0.9);
         }
 
         .login-btn {

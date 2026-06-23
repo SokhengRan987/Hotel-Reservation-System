@@ -1,5 +1,5 @@
-@extends('layouts.app')
 
+@extends('layouts.admin')
 @section('content')
 <div class="container mx-auto px-4 py-8">
     <div class="mb-6 flex items-center justify-between">

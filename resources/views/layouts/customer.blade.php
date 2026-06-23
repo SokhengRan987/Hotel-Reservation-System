@@ -11,7 +11,7 @@
     <style>
         /* ===== NAVBAR ===== */
         .custom-navbar {
-            background:skyblue;
+            background:rgb(96, 185, 205);
             padding: 15px 0;
             border-bottom: 3px solid #ff9800;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -69,7 +69,7 @@
 
         /* ===== FOOTER ===== */
         .footer {
-            background: skyblue;
+            background: rgb(96, 185, 205);
             padding: 50px 0 20px;
             color: white;
             border-top: 3px solid #ff9800;
@@ -86,7 +86,7 @@
             font-size: 1.3rem;
             font-weight: 700;
             margin-bottom: 20px;
-            color: #ff9800;
+            color:  rgb(96, 185, 205);
         }
         
         .footer-section p {
@@ -147,7 +147,9 @@
             }
         }
     </style>
+</style>
     @yield('styles')
+    @yield('head')
 </head>
 <body>
     <!-- NAVBAR -->
@@ -160,7 +162,7 @@
             <div class="d-none d-md-flex">
                <a href="{{ route('customer.rooms.index') }}" class="nav-link">Home</a>
                 <a href="{{ route('customer.rooms.index') }}" class="nav-link">Our Rooms</a>
-                <a href="#features" class="nav-link">Booking Tracker</a>
+                <a href="{{ route('customer.bookings.index') }}" class="nav-link">Booking Tracker</a>
             </div>
             <div>
                   @auth
@@ -210,7 +212,7 @@
                     <h3>Quick Links</h3>
                     <a href="{{ route('home') }}">Home</a>
                     <a href="{{ route('customer.rooms.index') }}">Rooms</a>
-                    <a href="#">Amenities</a>
+                    <a href="{{ route('customer.bookings.index') }}">Booking Tracker</a>
                     <a href="#">Contact Us</a>
                 </div>
 

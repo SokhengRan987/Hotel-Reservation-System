@@ -33,6 +33,21 @@
 
                         <!-- Room Info -->
                         <div style="padding: 30px;">
+                            
+                            {{-- ✅ Status Badge --}}
+                            @php $isBooked = $room->bookings->isNotEmpty(); @endphp
+                            <div style="margin-bottom:12px;">
+                                @if($isBooked)
+                                    <span style="background:#fde8e8; color:#c0392b; padding:4px 14px; border-radius:20px; font-size:0.8rem; font-weight:700;">
+                                        🔴 Booked
+                                    </span>
+                                @else
+                                    <span style="background:#e8f5e9; color:#2e7d32; padding:4px 14px; border-radius:20px; font-size:0.8rem; font-weight:700;">
+                                        🟢 Available
+                                    </span>
+                                @endif
+                            </div>
+
                             <h3 style="font-size: 1.5rem; font-weight: 700; color: #1e3c72; margin-bottom: 10px;">
                                 Room #{{ $room->number }}
                             </h3>
@@ -61,11 +76,19 @@
                                 </p>
                             </div>
 
-                            <!-- Book Button -->
-                            <a href="{{ route('customer.rooms.show', $room->id) }}" style="display: block; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white; padding: 12px; text-align: center; border-radius: 25px; cursor: pointer; font-weight: 600; transition: all 0.3s ease; text-decoration: none; border: none; width: 100%;" class="book-btn">
-                                Book Now <i class="fas fa-arrow-right" style="margin-left: 8px;"></i>
-                            </a>
+                            {{-- ✅ Book button — disabled if already booked --}}
+                            @if($isBooked)
+                                <div style="display: block; background: #ccc; color: white; padding: 12px; text-align: center; border-radius: 25px; font-weight: 600; cursor: not-allowed;">
+                                    Not Available <i class="fas fa-ban" style="margin-left: 8px;"></i>
+                                </div>
+                            @else
+                                <a href="{{ route('customer.rooms.show', $room->id) }}" style="display: block; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white; padding: 12px; text-align: center; border-radius: 25px; cursor: pointer; font-weight: 600; transition: all 0.3s ease; text-decoration: none; border: none; width: 100%;" class="book-btn">
+                                    Book Now <i class="fas fa-arrow-right" style="margin-left: 8px;"></i>
+                                </a>
+                            @endif
+
                         </div>
+
                     </div>
                 </div>
             @endforeach

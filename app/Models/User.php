@@ -36,10 +36,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    // ✅ ADD THIS METHOD
-        public function isAdmin(): bool
-        {
-            return $this->role === 'admin';
-        }
-
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
 }

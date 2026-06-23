@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hotel Admin - @yield('title', 'Dashboard')</title>
+     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         * {
             margin: 0;
@@ -83,8 +84,8 @@
         }
 
         .sidebar-brand svg {
-            width: 24px;
-            height: 24px;
+            width: 23px;
+            height: 23px;
         }
 
         .sidebar-menu {
@@ -109,8 +110,8 @@
         }
 
         .sidebar-menu a:hover {
-            background: var(--gray-100);
-            color: var(--primary);
+            background:whitesmoke;
+            color: skyblue;
         }
 
         .sidebar-menu a.active {
@@ -140,6 +141,9 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid var(--gray-200);
+             position: sticky;
+             top: 0;
+             z-index: 10;
         }
 
         .header-left {
