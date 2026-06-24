@@ -11,7 +11,8 @@ class Booking extends Model
 
     protected $fillable = [
         'user_id', 'room_id', 'start_date', 'end_date',
-        'guest_count', 'status', 'total_amount'
+        'guest_count', 'status', 'total_amount',
+        'full_name', 'email', 'phone'
     ];
 
     protected $casts = [

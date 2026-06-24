@@ -45,11 +45,13 @@
                         <td class="px-6 py-4 text-sm text-gray-600">{{ $payment->created_at->format('M d, Y') }}</td>
                         <td class="px-6 py-4 text-sm">
                             <div class="flex gap-2">
-                                <a href="{{ route('admin.payments.edit', $payment) }}" class="text-blue-600 hover:text-blue-900 font-medium">Edit</a>
+                                <a href="{{ route('admin.payments.edit', $payment) }}"style="background:#f0f4ff; color:#1e3a8a; padding:6px 14px; border-radius:6px; text-decoration:none; font-size:0.85rem; font-weight:600;">
+                                ✏️ Edit</a>
                                 <form action="{{ route('admin.payments.destroy', $payment) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" onclick="return confirm('Are you sure?')" class="text-red-600 hover:text-red-900 font-medium">Delete</button>
+                                    <button type="submit" onclick="return confirm('Are you sure?')"  style="background:#fef2f2; color:#dc2626; padding:6px 14px; border-radius:6px; border:none; font-size:0.85rem; font-weight:600; cursor:pointer;">
+                                    🗑️ Delete</button>
                                 </form>
                             </div>
                         </td>

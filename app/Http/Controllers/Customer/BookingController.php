@@ -55,18 +55,21 @@ class BookingController extends Controller
         DB::beginTransaction();
         try {
             $booking = Booking::create([
-                'user_id'      => $user->id,
-                'room_id'      => $room->id,
-                'start_date'   => $start,
-                'end_date'     => $end,
-                'guest_count'  => $request->guest_count ?? 1,
-                'status'       => 'pending',
-                'total_amount' => $total,
+                'user_id'     => $user->id,
+                'room_id'     => $room->id,
+                'start_date'  => $start,
+                'end_date'    => $end,
+                'guest_count' => $request->guest_count,
+                'status'      => 'pending',
+                'total_amount'=> $total,
+                'full_name'   => $request->full_name,
+                'email'       => $request->email,
+                'phone'       => $request->phone,
             ]);
 
             Payment::create([
                 'booking_id' => $booking->id,
-                'provider'   => 'pending',  // ✅ FIX: was hardcoded 'stripe'
+                'provider'   => 'pending',  
                 'amount'     => $total,
                 'status'     => 'pending',
             ]);

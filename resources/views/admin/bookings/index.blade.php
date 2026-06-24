@@ -58,11 +58,13 @@
                         </td>
                         <td class="px-6 py-4 text-sm">
                             <div class="flex gap-2">
-                                <a href="{{ route('admin.bookings.edit', $booking) }}" class="text-blue-600 hover:text-blue-900 font-medium">Edit</a>
+                                <a href="{{ route('admin.bookings.edit', $booking) }}" style="background:#f0f4ff; color:#1e3a8a; padding:6px 14px; border-radius:6px; text-decoration:none; font-size:0.85rem; font-weight:600;">
+                                ✏️ Edit</a>
                                 <form action="{{ route('admin.bookings.destroy', $booking) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" onclick="return confirm('Are you sure?')" class="text-red-600 hover:text-red-900 font-medium">Delete</button>
+                                    <button type="submit" onclick="return confirm('Are you sure?')"  style="background:#fef2f2; color:#dc2626; padding:6px 14px; border-radius:6px; border:none; font-size:0.85rem; font-weight:600; cursor:pointer;">
+                                    🗑️ Delete</button>
                                 </form>
                             </div>
                         </td>

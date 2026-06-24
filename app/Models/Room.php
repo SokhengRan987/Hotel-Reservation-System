@@ -8,11 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Room extends Model
 {
     use HasFactory;
-    protected $fillable = ['number','type','description','price','capacity','features','image'];
+    protected $fillable = ['number','type','description','price','capacity','features','image', 'images'];
     protected $casts = [
         'features' => 'array',
+        'images' => 'array',
         'price' => 'decimal:2'
     ];
+    
     
     // Alias max_adults to capacity for backward compatibility
     public function getMaxAdultsAttribute()

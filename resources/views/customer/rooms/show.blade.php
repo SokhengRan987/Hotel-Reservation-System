@@ -1,4 +1,3 @@
-
 @section('head')
     <meta name="csrf-token" content="{{ csrf_token() }}">
 @endsection
@@ -15,22 +14,61 @@
         </a>
 
         <div class="row g-4">
-            <!-- Room Image -->
+
+            <!-- ── Room Image Gallery ── -->
             <div class="col-lg-6">
-                <div style="background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 8px 25px rgba(0,0,0,0.1);">
-                    @if($room->image)
-                        <img src="{{ asset('storage/'.$room->image) }}" alt="Room {{ $room->number }}" style="width:100%; height:400px; object-fit:cover;">
+                @php
+                    $allImages = [];
+                    if ($room->image) $allImages[] = $room->image;
+                    if ($room->images) $allImages = array_merge($allImages, $room->images);
+                @endphp
+
+                <div id="galleryWrap" style="border-radius:15px; overflow:hidden; box-shadow:0 8px 25px rgba(0,0,0,0.1); display:flex; flex-direction:column; height:100%;">
+
+                    @if(count($allImages) > 0)
+                        {{-- Main large image --}}
+                        <div style="flex:1; min-height:0;">
+                            <img id="mainImg"
+                                 src="{{ asset('storage/'.$allImages[0]) }}"
+                                 onclick="openLightbox(0)"
+                                 style="width:100%; height:100%; object-fit:cover; display:block; cursor:zoom-in; min-height:320px;">
+                        </div>
+
+                        {{-- Thumbnail strip --}}
+                        @if(count($allImages) > 1)
+                            <div style="display:grid; grid-template-columns:repeat({{ min(count($allImages)-1, 4) }}, 1fr); gap:3px; background:#000;">
+                                @foreach($allImages as $i => $img)
+                                    @if($i > 0)
+                                        <div style="position:relative; aspect-ratio:16/9; overflow:hidden;">
+                                            <img src="{{ asset('storage/'.$img) }}"
+                                                 onclick="switchMain('{{ asset('storage/'.$img) }}', {{ $i }})"
+                                                 style="width:100%; height:100%; object-fit:cover; cursor:pointer; transition:opacity 0.2s; opacity:0.85;"
+                                                 onmouseover="this.style.opacity='1'"
+                                                 onmouseout="this.style.opacity='0.85'">
+                                            @if($i === 4 && count($allImages) > 5)
+                                                <div onclick="openLightbox(4)"
+                                                     style="position:absolute; inset:0; background:rgba(0,0,0,0.55); display:flex; align-items:center; justify-content:center; color:white; font-size:1.4rem; font-weight:800; cursor:pointer;">
+                                                    +{{ count($allImages) - 5 }}
+                                                </div>
+                                            @endif
+                                        </div>
+                                    @endif
+                                @endforeach
+                            </div>
+                        @endif
+
                     @else
-                        <div style="height:400px; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#87CEEB,#FFB366); color:white; font-size:4rem;">
+                        <div style="flex:1; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#87CEEB,#FFB366); color:white; font-size:4rem; min-height:400px;">
                             <i class="fas fa-door-open"></i>
                         </div>
                     @endif
+
                 </div>
             </div>
 
-            <!-- Booking Panel -->
+            <!-- ── Booking Panel ── -->
             <div class="col-lg-6">
-                <div style="background:white; border-radius:15px; padding:40px; box-shadow:0 8px 25px rgba(0,0,0,0.1);">
+                <div id="bookingPanel" style="background:white; border-radius:15px; padding:40px; box-shadow:0 8px 25px rgba(0,0,0,0.1);">
 
                     <h1 style="color:#1e3c72; font-weight:800;">Room #{{ $room->number }}</h1>
                     <p style="color:#ff9800; font-weight:600;">
@@ -46,20 +84,19 @@
                     <!-- Info -->
                     <div style="background:#f8f9fa; padding:20px; border-left:4px solid #ff9800; border-radius:10px; margin-bottom:25px;">
                         <strong>Max Guests:</strong> {{ $room->capacity ?? 1 }} <br>
-                        {{-- REPLACE with this --}}
-                            @php
-                                $isBooked = $room->bookings()
-                                    ->whereIn('status', ['pending', 'confirmed', 'checked_in'])
-                                    ->where('start_date', '<', now()->addDays(1))
-                                    ->where('end_date', '>', now())
-                                    ->exists();
-                            @endphp
-                            <strong>Status:</strong>
-                            @if($isBooked)
-                                <span style="color:#e53935;">Booked</span>
-                            @else
-                                <span style="color:#4caf50;">Available</span>
-                            @endif
+                        @php
+                            $isBooked = $room->bookings()
+                                ->whereIn('status', ['pending', 'confirmed', 'checked_in'])
+                                ->where('start_date', '<', now()->addDays(1))
+                                ->where('end_date', '>', now())
+                                ->exists();
+                        @endphp
+                        <strong>Status:</strong>
+                        @if($isBooked)
+                            <span style="color:#e53935;">Booked</span>
+                        @else
+                            <span style="color:#4caf50;">Available</span>
+                        @endif
                     </div>
 
                     <!-- BOOKING FORM -->
@@ -68,38 +105,38 @@
                         <input type="hidden" name="room_id" value="{{ $room->id }}">
 
                         <div style="margin-bottom:15px;">
-                            <label>Check-in Date</label>
-                            <input type="date"
-                                   id="startDate"
-                                   name="start_date"
-                                   min="{{ now()->toDateString() }}"
-                                   required
-                                   class="form-control">
+                            <label style="font-size:15px; color:#ff9800; font-weight:bold;">Check-in Date</label>
+                            <input type="date" id="startDate" name="start_date"
+                                   min="{{ now()->toDateString() }}" required class="form-control">
                         </div>
 
                         <div style="margin-bottom:15px;">
-                            <label>Check-out Date</label>
-                            <input type="date"
-                                   id="endDate"
-                                   name="end_date"
-                                   min="{{ now()->addDay()->toDateString() }}"
-                                   required
-                                   class="form-control">
+                            <label style="font-size:15px; color:#ff9800; font-weight:bold;">Check-out Date</label>
+                            <input type="date" id="endDate" name="end_date"
+                                   min="{{ now()->addDay()->toDateString() }}" required class="form-control">
                         </div>
 
-                        <div style="margin-bottom:25px;">
-                            <label>Guests</label>
-                            <input type="number"
-                                   name="guest_count"
-                                   min="1"
-                                   max="{{ $room->capacity ?? 1 }}"
-                                   value="1"
-                                   required
-                                   class="form-control">
+                        <div style="margin-bottom:15px;">
+                            <label style="font-size:15px; color:#ff9800; font-weight:bold;">Full Name <span style="color:red;">*</span></label>
+                            <input type="text" name="full_name"
+                                   placeholder="Enter your full name (matching your ID/passport)"
+                                   required class="form-control">
+                        </div>
+
+                        <div style="margin-bottom:15px;">
+                            <label style="font-size:15px; color:#ff9800; font-weight:bold;">Email Address <span style="color:red;">*</span></label>
+                            <input type="email" name="email"
+                                   placeholder="Enter your email" required class="form-control">
+                        </div>
+
+                        <div style="margin-bottom:15px;">
+                            <label style="font-size:15px; color:#ff9800; font-weight:bold;">Phone Number <span style="color:red;">*</span></label>
+                            <input type="text" name="phone"
+                                   placeholder="e.g. +855 12 345 678" required class="form-control">
                         </div>
 
                         <!-- Price Breakdown -->
-                        <div style="background:#f0f7ff; padding:15px; border-radius:10px; margin-bottom:20px; display:none;" id="priceBreakdown">
+                        <div id="priceBreakdown" style="background:#f0f7ff; padding:15px; border-radius:10px; margin-bottom:20px; display:none;">
                             <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
                                 <span>Nights: <strong id="nightsCount">0</strong></span>
                                 <span>× $<strong>{{ number_format($room->price, 2) }}</strong></span>
@@ -110,9 +147,7 @@
                             </div>
                         </div>
 
-                        <button type="submit"
-                                class="btn btn-warning w-100 fw-bold"
-                                onclick="submitBooking(event)">
+                        <button type="submit" class="btn btn-warning w-100 fw-bold" onclick="submitBooking(event)">
                             <i class="fas fa-credit-card"></i> Book Now & Pay
                         </button>
                     </form>
@@ -121,149 +156,158 @@
                     <div style="margin-top:30px; border-top:2px solid #eee; padding-top:20px;">
                         <h5>Room Features</h5>
                         <ul style="list-style:none; padding:0;">
-                            <li>✔ King-size Bed</li>
-                            <li>✔ Modern Bathroom</li>
-                            <li>✔ Air Conditioning</li>
-                            <li>✔ 24/7 Room Service</li>
-                            <li>✔ Free Wi-Fi</li>
+                            @if($room->features && count($room->features) > 0)
+                                @foreach($room->features as $feature)
+                                    <li>✔ {{ $feature }}</li>
+                                @endforeach
+                            @else
+                                <li>✔ King-size Bed</li>
+                                <li>✔ Modern Bathroom</li>
+                                <li>✔ Air Conditioning</li>
+                                <li>✔ 24/7 Room Service</li>
+                                <li>✔ Free Wi-Fi</li>
+                            @endif
                         </ul>
                     </div>
 
                 </div>
             </div>
+
         </div>
     </div>
 </div>
 
-<script>
-// Fetch disabled dates on page load
-let disabledDates = [];
-const roomPrice = parseFloat("{{ $room->price }}");
+{{-- ── Lightbox ── --}}
+<div id="lightbox"
+     onclick="closeLightbox()"
+     style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:9999; align-items:center; justify-content:center;">
+    <div onclick="closeLightbox()"
+         style="position:absolute; top:20px; right:28px; color:white; font-size:2rem; cursor:pointer; font-weight:700; z-index:10000;">✕</div>
+    <div onclick="event.stopPropagation(); changeLight(-1)"
+         style="position:absolute; left:20px; color:white; font-size:3rem; cursor:pointer; user-select:none; z-index:10000;">&#8249;</div>
+    <img id="lightboxImg" src=""
+         onclick="event.stopPropagation()"
+         style="max-width:90vw; max-height:88vh; object-fit:contain; border-radius:10px;">
+    <div onclick="event.stopPropagation(); changeLight(1)"
+         style="position:absolute; right:20px; color:white; font-size:3rem; cursor:pointer; user-select:none; z-index:10000;">&#8250;</div>
+    <div id="lightboxCounter"
+         style="position:absolute; bottom:20px; left:50%; transform:translateX(-50%); color:white; font-size:0.9rem; background:rgba(0,0,0,0.5); padding:4px 16px; border-radius:20px;"></div>
+</div>
 
-document.addEventListener('DOMContentLoaded', function() {
+<script>
+const allImages = {!! json_encode(array_map(fn($img) => asset('storage/'.$img), $allImages)) !!};
+let currentLight = 0;
+const roomPrice = parseFloat("{{ $room->price }}");
+let disabledDates = [];
+
+// Match gallery height to booking panel
+function matchHeight() {
+    const panel   = document.getElementById('bookingPanel');
+    const gallery = document.getElementById('galleryWrap');
+    if (panel && gallery && window.innerWidth >= 992) {
+        gallery.style.height = panel.offsetHeight + 'px';
+    }
+}
+window.addEventListener('load', matchHeight);
+window.addEventListener('resize', matchHeight);
+
+// Switch main image on thumbnail click
+function switchMain(src, index) {
+    document.getElementById('mainImg').src = src;
+    currentLight = index;
+}
+
+// Lightbox
+function openLightbox(index) {
+    currentLight = index;
+    document.getElementById('lightboxImg').src = allImages[index];
+    document.getElementById('lightboxCounter').textContent = (index + 1) + ' / ' + allImages.length;
+    document.getElementById('lightbox').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+    document.getElementById('lightbox').style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+function changeLight(dir) {
+    currentLight = (currentLight + dir + allImages.length) % allImages.length;
+    document.getElementById('lightboxImg').src = allImages[currentLight];
+    document.getElementById('lightboxCounter').textContent = (currentLight + 1) + ' / ' + allImages.length;
+}
+
+document.addEventListener('keydown', e => {
+    if (document.getElementById('lightbox').style.display === 'flex') {
+        if (e.key === 'ArrowRight') changeLight(1);
+        if (e.key === 'ArrowLeft')  changeLight(-1);
+        if (e.key === 'Escape')     closeLightbox();
+    }
+});
+
+// Disabled dates
+document.addEventListener('DOMContentLoaded', function () {
     fetchDisabledDates();
-    
-    // Add event listeners for date and price calculation
     document.getElementById('startDate').addEventListener('change', calculatePrice);
     document.getElementById('endDate').addEventListener('change', calculatePrice);
 });
 
-// Fetch disabled dates from API
 function fetchDisabledDates() {
     fetch("{{ route('customer.rooms.disabled-dates', $room->id) }}")
         .then(res => res.json())
-        .then(data => {
-            disabledDates = data.disabled_dates;
-            // Apply validation to date inputs
-            applyDateValidation();
-        })
+        .then(data => { disabledDates = data.disabled_dates; })
         .catch(err => console.error('Error fetching disabled dates:', err));
 }
 
-// Apply date validation
-function applyDateValidation() {
-    const startInput = document.getElementById('startDate');
-    const endInput = document.getElementById('endDate');
-    
-    // Set validation attributes
-    startInput.addEventListener('input', function() {
-        validateDate(this, 'start');
-    });
-    
-    endInput.addEventListener('input', function() {
-        validateDate(this, 'end');
-    });
-}
-
-// Validate if selected date is disabled
-function validateDate(input, type) {
-    const selectedDate = input.value;
-    if (disabledDates.includes(selectedDate)) {
+function validateDate(input) {
+    if (disabledDates.includes(input.value)) {
         input.value = '';
         alert('This date is not available. Please select another date.');
     }
 }
 
-// Calculate and display price
 function calculatePrice() {
     const startDate = document.getElementById('startDate').value;
-    const endDate = document.getElementById('endDate').value;
-    const priceBreakdown = document.getElementById('priceBreakdown');
-    
+    const endDate   = document.getElementById('endDate').value;
+    const breakdown = document.getElementById('priceBreakdown');
     if (startDate && endDate) {
-        const start = new Date(startDate);
-        const end = new Date(endDate);
-        
-        if (end <= start) {
-            priceBreakdown.style.display = 'none';
-            return;
-        }
-        
-        // Calculate nights
+        const start  = new Date(startDate);
+        const end    = new Date(endDate);
+        if (end <= start) { breakdown.style.display = 'none'; return; }
         const nights = Math.floor((end - start) / (1000 * 60 * 60 * 24));
-        const total = nights * roomPrice;
-        
-        // Update display
-        document.getElementById('nightsCount').textContent = nights;
-        document.getElementById('totalAmount').textContent = total.toFixed(2);
-        priceBreakdown.style.display = 'block';
+        document.getElementById('nightsCount').textContent  = nights;
+        document.getElementById('totalAmount').textContent  = (nights * roomPrice).toFixed(2);
+        breakdown.style.display = 'block';
     } else {
-        priceBreakdown.style.display = 'none';
+        breakdown.style.display = 'none';
     }
 }
 
 function submitBooking(e) {
     e.preventDefault();
-
     const form = document.getElementById('bookingForm');
-    const btn = e.target;
+    const btn  = e.target;
     const data = new FormData(form);
-
     btn.disabled = true;
     btn.innerHTML = 'Processing...';
-
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     fetch("{{ route('customer.bookings.store') }}", {
-        method: "POST",
-        credentials: "same-origin",
-        headers: {
-            'X-CSRF-TOKEN': csrfToken,
-            'Accept': 'application/json'
-        },
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'X-CSRF-TOKEN': csrfToken, 'Accept': 'application/json' },
         body: data
     })
-    .then(async res => {
-        const json = await res.json();
-        if (!res.ok) throw json;
-        return json;
-    })
-    .then(res => {
-        window.location.href = res.redirect;
-    })
+    .then(async res => { const json = await res.json(); if (!res.ok) throw json; return json; })
+    .then(res => { window.location.href = res.redirect; })
     .catch(err => {
-        console.error('Booking Error:', err); // Log to browser console for debugging
-        
-        let errorMessage = 'Booking failed. ';
-        
-        // Check for validation errors
-        if (err.errors) {
-            const errors = err.errors;
-            if (errors.start_date) errorMessage += errors.start_date[0];
-            else if (errors.end_date) errorMessage += errors.end_date[0];
-            else if (errors.room_id) errorMessage += errors.room_id[0];
-            else if (errors.guest_count) errorMessage += errors.guest_count[0];
-            else errorMessage += Object.values(errors)[0][0];
-        } else if (err.error) {
-            errorMessage += err.error;
-        } else if (err.message) {
-            errorMessage += err.message;
-        } else {
-            errorMessage += 'Please check your booking details and try again.';
-        }
-        
-        alert(errorMessage);
+        let msg = 'Booking failed. ';
+        if (err.errors)      msg += Object.values(err.errors)[0][0];
+        else if (err.error)  msg += err.error;
+        else if (err.message) msg += err.message;
+        else msg += 'Please check your details and try again.';
+        alert(msg);
         btn.disabled = false;
-        btn.innerHTML = 'Book Now & Pay';
+        btn.innerHTML = '<i class="fas fa-credit-card"></i> Book Now & Pay';
     });
 }
 </script>

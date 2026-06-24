@@ -1,12 +1,20 @@
 
 @extends('layouts.admin')
+
 @section('content')
-<div class="container mx-auto px-4 py-8 max-w-2xl">
-    <div class="text-4xl font-bold text-blue-600 mb-6">Edit Booking Status</div>
+<div style="max-width:880px; margin:0 auto; padding:24px 16px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; gap:18px; margin-bottom:24px; flex-wrap:wrap;">
+        <div>
+            <h1 style="font-size:1.8rem; font-weight:800; color:#1e3a8a; margin:0;">Edit Booking Status</h1>
+            <p style="color:#6b7280; margin:6px 0 0;">Update this booking to match the current reservation workflow.</p>
+        </div>
+        <a href="{{ route('admin.bookings.index') }}" style="background:#f3f4f6; color:#374151; padding:10px 20px; border-radius:10px; text-decoration:none; font-weight:600; font-size:0.95rem;">← Back to Bookings</a>
+    </div>
 
     @if ($errors->any())
-        <div class="mb-6 rounded-lg bg-red-100 p-4 text-red-700">
-            <ul>
+        <div style="background:#fef2f2; border:1px solid #fca5a5; color:#991b1b; padding:16px 18px; border-radius:12px; margin-bottom:20px;">
+            <strong>Please fix these errors:</strong>
+            <ul style="margin:8px 0 0 16px;">
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
                 @endforeach
@@ -14,44 +22,44 @@
         </div>
     @endif
 
-    <div class="rounded-lg bg-white shadow p-6 mb-6">
-        <h2 class="text-xl font-semibold text-gray-800 mb-4">Booking Details</h2>
-        <div class="grid grid-cols-2 gap-4 mb-6">
+    <div style="background:#fffaf8; border-radius:16px; box-shadow:0 2px 15px rgba(30,58,138,0.07); border:1px solid #eae6f6; padding:24px; margin-bottom:20px;">
+        <h2 style="font-size:1.1rem; font-weight:700; color:#1e3a8a; margin-bottom:18px;">Booking Details</h2>
+        <div style="display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px;">
             <div>
-                <p class="text-sm text-gray-600">Guest Name</p>
-                <p class="text-lg font-semibold text-gray-800">{{ $booking->user->name }}</p>
+                <p style="font-size:0.85rem; color:#6b7280; margin-bottom:6px;">Guest Name</p>
+                <p style="font-size:1rem; font-weight:700; color:#111827;">{{ $booking->user->name }}</p>
             </div>
             <div>
-                <p class="text-sm text-gray-600">Email</p>
-                <p class="text-lg font-semibold text-gray-800">{{ $booking->user->email }}</p>
+                <p style="font-size:0.85rem; color:#6b7280; margin-bottom:6px;">Email</p>
+                <p style="font-size:1rem; font-weight:700; color:#111827;">{{ $booking->user->email }}</p>
             </div>
             <div>
-                <p class="text-sm text-gray-600">Room</p>
-                <p class="text-lg font-semibold text-gray-800">Room {{ $booking->room->number }}</p>
+                <p style="font-size:0.85rem; color:#6b7280; margin-bottom:6px;">Room</p>
+                <p style="font-size:1rem; font-weight:700; color:#111827;">Room {{ $booking->room->number }}</p>
             </div>
             <div>
-                <p class="text-sm text-gray-600">Total Amount</p>
-                <p class="text-lg font-semibold text-gray-800">${{ number_format($booking->total_amount, 2) }}</p>
+                <p style="font-size:0.85rem; color:#6b7280; margin-bottom:6px;">Total Amount</p>
+                <p style="font-size:1rem; font-weight:700; color:#111827;">${{ number_format($booking->total_amount, 2) }}</p>
             </div>
             <div>
-                <p class="text-sm text-gray-600">Check-In</p>
-                <p class="text-lg font-semibold text-gray-800">{{ $booking->start_date->format('M d, Y') }}</p>
+                <p style="font-size:0.85rem; color:#6b7280; margin-bottom:6px;">Check-In</p>
+                <p style="font-size:1rem; font-weight:700; color:#111827;">{{ $booking->start_date->format('M d, Y') }}</p>
             </div>
             <div>
-                <p class="text-sm text-gray-600">Check-Out</p>
-                <p class="text-lg font-semibold text-gray-800">{{ $booking->end_date->format('M d, Y') }}</p>
+                <p style="font-size:0.85rem; color:#6b7280; margin-bottom:6px;">Check-Out</p>
+                <p style="font-size:1rem; font-weight:700; color:#111827;">{{ $booking->end_date->format('M d, Y') }}</p>
             </div>
         </div>
     </div>
 
-    <div class="rounded-lg bg-white shadow p-6">
+    <div style="background:#fffaf8; border-radius:16px; box-shadow:0 2px 15px rgba(30,58,138,0.07); border:1px solid #eae6f6; padding:24px;">
         <form action="{{ route('admin.bookings.update', $booking) }}" method="POST">
             @csrf
             @method('PUT')
 
-            <div class="mb-6">
-                <label for="status" class="block text-px-6 py-2 font-semibold text-gray-700 mb-4">Booking Status</label>
-                <select name="status" id="status" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+            <div style="margin-bottom:18px;">
+                <label for="status" style="display:block; margin-bottom:8px; font-weight:600; color:#374151;">Booking Status</label>
+                <select name="status" id="status" style="width:100%; padding:12px 14px; border:1px solid #d1d5db; border-radius:12px; font-size:0.95rem; outline:none; background:white;">
                     <option value="pending" @selected($booking->status === 'pending')>Pending</option>
                     <option value="confirmed" @selected($booking->status === 'confirmed')>Confirmed</option>
                     <option value="checked_in" @selected($booking->status === 'checked_in')>Checked In</option>
@@ -60,13 +68,9 @@
                 </select>
             </div>
 
-            <div class="flex gap-4">
-                <button type="submit" class="px-6 py-2 bg-blue-600 text-gray-800 hover:text-blue-400 font-semibold rounded-lg hover:bg-blue-700 transition">
-                    Update Status
-                </button>
-                <a href="{{ route('admin.bookings.index') }}" class="px-6 py-2 bg-gray-300 text-gray-800 font-semibold rounded-lg hover:bg-gray-400 transition">
-                    Cancel
-                </a>
+            <div style="display:flex; gap:12px; justify-content:flex-end; flex-wrap:wrap;">
+                <a href="{{ route('admin.bookings.index') }}" style="padding:12px 24px; background:#f3f4f6; color:#374151; border-radius:10px; text-decoration:none; font-weight:700;">Cancel</a>
+                <button type="submit" style="padding:12px 24px; background:linear-gradient(135deg,#1e3a8a,#2563eb); color:white; border:none; border-radius:10px; font-weight:700; cursor:pointer;">Update Status</button>
             </div>
         </form>
     </div>
