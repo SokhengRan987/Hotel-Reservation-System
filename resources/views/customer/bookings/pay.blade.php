@@ -42,7 +42,7 @@
                             <input type="radio" name="payment_method" value="credit_card" style="display:none;">
                             <div class="d-flex align-items-center gap-3">
                                 <span style="font-size:1.8rem;">💳</span>
-                                <span style="font-weight:700;">Credit Card</span>
+                                <span style="font-weight:700; color:#1e3c72;">Credit Card</span>
                                 <span style="color:#aaa; font-size:0.8rem; margin-left:auto;">Visa, Mastercard</span>
                             </div>
                         </label>
@@ -51,7 +51,7 @@
                             <input type="radio" name="payment_method" value="paypal" style="display:none;">
                             <div class="d-flex align-items-center gap-3">
                                 <span style="font-size:1.8rem;">⚡</span>
-                                <span style="font-weight:700;">PayPal</span>
+                                <span style="font-weight:700; color:#1e3c72;">PayPal</span>
                                 <span style="color:#aaa; font-size:0.8rem; margin-left:auto;">Fast & Secure</span>
                             </div>
                         </label>
@@ -60,7 +60,7 @@
                             <input type="radio" name="payment_method" value="aba_qr" style="display:none;">
                             <div class="d-flex align-items-center gap-3">
                                 <span style="font-size:1.8rem;">📱</span>
-                                <span style="font-weight:700;">ABA QR Code</span>
+                                <span style="font-weight:700; color:#1e3c72;">ABA QR Code</span>
                                 <span style="color:#aaa; font-size:0.8rem; margin-left:auto;">ABA Mobile</span>
                             </div>
                         </label>
@@ -69,7 +69,7 @@
                             <input type="radio" name="payment_method" value="cash" style="display:none;">
                             <div class="d-flex align-items-center gap-3">
                                 <span style="font-size:1.8rem;">💵</span>
-                                <span style="font-weight:700;">Cash</span>
+                                <span style="font-weight:700; color:#1e3c72;">Cash</span>
                                 <span style="color:#aaa; font-size:0.8rem; margin-left:auto;">Pay at Reception</span>
                             </div>
                         </label>

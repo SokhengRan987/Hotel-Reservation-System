@@ -24,6 +24,14 @@
                         </span>
                     </div>
 
+                    <!-- Guest Info -->
+                    <div style="background:#f8f9fa; padding:15px; border-radius:10px; margin-bottom:20px;">
+                        <h4 style="color:#1e3c72; font-weight:700; margin-bottom:8px;">Guest Information</h4>
+                        <h6 style="margin:0 0 6px; color: #ff9800;"><strong>Full Name:</strong> {{ $booking->full_name ?? $booking->user->name }}</h6>
+                        <h6 style="margin:0 0 6px;color: #ff9800;"><strong>Email:</strong> {{ $booking->email ?? $booking->user->email }}</h6>
+                        <h6 style="margin:0;color: #ff9800;"><strong>Phone:</strong> {{ $booking->phone ?? '—' }}</h6>
+                    </div>
+
                     <!-- Room Details -->
                     <div style="background: #f8f9fa; padding: 25px; border-radius: 15px; margin-bottom: 30px;">
                         <h4 style="color: #1e3c72; margin-bottom: 20px; font-weight: 700;">Room Information</h4>
@@ -51,7 +59,7 @@
                             </div>
 
                             <div>
-                                <p style="color: #888; font-size: 0.9rem; margin: 0 0 5px 0;">MAX GUESTS</p>
+                                <p style="color: #888888c7; font-size: 0.9rem; margin: 0 0 5px 0;">MAX GUESTS</p>
                                 <p style="color: #1e3c72; font-weight: 600; margin: 0;">
                                     {{ $booking->room->max_adults }} guests
                                 </p>

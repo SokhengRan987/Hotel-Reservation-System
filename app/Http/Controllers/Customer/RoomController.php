@@ -16,9 +16,8 @@ class RoomController extends Controller
        public function index()
 {
     $rooms = Room::with(['bookings' => function($q) {
-        $q->whereIn('status', ['pending', 'confirmed', 'checked_in'])
-          ->where('start_date', '<', now()->addDays(1))
-          ->where('end_date', '>', now());
+                    $q->whereIn('status', ['pending', 'confirmed', 'checked_in'])
+                        ->where('end_date', '>', now());
         }])->paginate(12);
 
     return view('customer.rooms.index', compact('rooms'));

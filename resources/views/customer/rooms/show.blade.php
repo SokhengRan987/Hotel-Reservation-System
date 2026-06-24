@@ -82,8 +82,10 @@
                     </div>
 
                     <!-- Info -->
-                    <div style="background:#f8f9fa; padding:20px; border-left:4px solid #ff9800; border-radius:10px; margin-bottom:25px;">
-                        <strong>Max Guests:</strong> {{ $room->capacity ?? 1 }} <br>
+                    <div style="background:#f8f9fa; padding:20px; border-left:4px solid #ff9800; border-radius:10px; margin-bottom:25px; color:#374151;">
+                        <strong style="color:#374151;">Max Guests:</strong>
+                        <span style="color:#111827; font-weight:700;"> {{ $room->capacity ?? 1 }}</span>
+                        <br>
                         @php
                             $isBooked = $room->bookings()
                                 ->whereIn('status', ['pending', 'confirmed', 'checked_in'])
@@ -91,12 +93,14 @@
                                 ->where('end_date', '>', now())
                                 ->exists();
                         @endphp
-                        <strong>Status:</strong>
-                        @if($isBooked)
-                            <span style="color:#e53935;">Booked</span>
-                        @else
-                            <span style="color:#4caf50;">Available</span>
-                        @endif
+                        <strong style="color:#374151;">Status:</strong>
+                        <span id="roomStatus" style="font-weight:800; margin-left:6px;">
+                            @if($isBooked)
+                                <span style="color:#e53935;">Booked</span>
+                            @else
+                                <span style="color:#4caf50;">Available</span>
+                            @endif
+                        </span>
                     </div>
 
                     <!-- BOOKING FORM -->
@@ -114,6 +118,13 @@
                             <label style="font-size:15px; color:#ff9800; font-weight:bold;">Check-out Date</label>
                             <input type="date" id="endDate" name="end_date"
                                    min="{{ now()->addDay()->toDateString() }}" required class="form-control">
+                        </div>
+
+                        <div style="margin-bottom:15px;">
+                            <label style="font-size:15px; color:#ff9800; font-weight:bold;">Guests <span style="color:red;">*</span></label>
+                            <input type="number" name="guest_count" value="1" min="1" max="{{ $room->capacity ?? 10 }}"
+                                   placeholder="Number of guests"
+                                   required class="form-control">
                         </div>
 
                         <div style="margin-bottom:15px;">
@@ -138,7 +149,7 @@
                         <!-- Price Breakdown -->
                         <div id="priceBreakdown" style="background:#f0f7ff; padding:15px; border-radius:10px; margin-bottom:20px; display:none;">
                             <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-                                <span>Nights: <strong id="nightsCount">0</strong></span>
+                                <span style="color:#374151;">Nights: <strong id="nightsCount" style="color:#1e3c72;">0</strong></span>
                                 <span>× $<strong>{{ number_format($room->price, 2) }}</strong></span>
                             </div>
                             <div style="border-top:1px solid #ddd; padding-top:10px; display:flex; justify-content:space-between; font-weight:bold; font-size:1.1em; color:#1e3c72;">
@@ -153,19 +164,19 @@
                     </form>
 
                     <!-- FEATURES -->
-                    <div style="margin-top:30px; border-top:2px solid #eee; padding-top:20px;">
-                        <h5>Room Features</h5>
+                    <div style="margin-top:30px; border-top:2px solid #eee; padding-top:20px; color:#374151;">
+                        <h5 style="color:#1e3c72; font-weight:800; margin-bottom:12px;">Room Features</h5>
                         <ul style="list-style:none; padding:0;">
                             @if($room->features && count($room->features) > 0)
                                 @foreach($room->features as $feature)
-                                    <li>✔ {{ $feature }}</li>
+                                    <li style="color:#374151; margin-bottom:6px;">✔ <span style="margin-left:6px;">{{ $feature }}</span></li>
                                 @endforeach
                             @else
-                                <li>✔ King-size Bed</li>
-                                <li>✔ Modern Bathroom</li>
-                                <li>✔ Air Conditioning</li>
-                                <li>✔ 24/7 Room Service</li>
-                                <li>✔ Free Wi-Fi</li>
+                                <li style="color:#374151; margin-bottom:6px;">✔ <span style="margin-left:6px;">King-size Bed</span></li>
+                                <li style="color:#374151; margin-bottom:6px;">✔ <span style="margin-left:6px;">Modern Bathroom</span></li>
+                                <li style="color:#374151; margin-bottom:6px;">✔ <span style="margin-left:6px;">Air Conditioning</span></li>
+                                <li style="color:#374151; margin-bottom:6px;">✔ <span style="margin-left:6px;">24/7 Room Service</span></li>
+                                <li style="color:#374151; margin-bottom:6px;">✔ <span style="margin-left:6px;">Free Wi-Fi</span></li>
                             @endif
                         </ul>
                     </div>
@@ -199,6 +210,8 @@ const allImages = {!! json_encode(array_map(fn($img) => asset('storage/'.$img), 
 let currentLight = 0;
 const roomPrice = parseFloat("{{ $room->price }}");
 let disabledDates = [];
+let initialRoomStatusText = null;
+let initialRoomStatusColor = null;
 
 // Match gallery height to booking panel
 function matchHeight() {
@@ -250,6 +263,12 @@ document.addEventListener('DOMContentLoaded', function () {
     fetchDisabledDates();
     document.getElementById('startDate').addEventListener('change', calculatePrice);
     document.getElementById('endDate').addEventListener('change', calculatePrice);
+    // capture initial status so we can revert when no dates selected
+    const statusEl = document.getElementById('roomStatus');
+    if (statusEl) {
+        initialRoomStatusText = statusEl.textContent.trim();
+        initialRoomStatusColor = getComputedStyle(statusEl).color;
+    }
 });
 
 function fetchDisabledDates() {
@@ -278,8 +297,35 @@ function calculatePrice() {
         document.getElementById('nightsCount').textContent  = nights;
         document.getElementById('totalAmount').textContent  = (nights * roomPrice).toFixed(2);
         breakdown.style.display = 'block';
+
+        // Update room status based on selected date range vs disabledDates
+        const statusEl = document.getElementById('roomStatus');
+        if (statusEl) {
+            const s = new Date(startDate);
+            const e = new Date(endDate);
+            // iterate each date from s (inclusive) to the day before e
+            let blocked = false;
+            for (let d = new Date(s); d < e; d.setDate(d.getDate() + 1)) {
+                const yyyy = d.getFullYear();
+                const mm = String(d.getMonth() + 1).padStart(2, '0');
+                const dd = String(d.getDate()).padStart(2, '0');
+                const ds = `${yyyy}-${mm}-${dd}`;
+                if (disabledDates.includes(ds)) { blocked = true; break; }
+            }
+            if (blocked) {
+                statusEl.innerHTML = '<span style="color:#e53935; font-weight:800;">Booked</span>';
+            } else {
+                statusEl.innerHTML = '<span style="color:#4caf50; font-weight:800;">Available</span>';
+            }
+        }
     } else {
         breakdown.style.display = 'none';
+        // restore initial status when no full date range selected
+        const statusEl = document.getElementById('roomStatus');
+        if (statusEl && initialRoomStatusText !== null) {
+            statusEl.textContent = initialRoomStatusText;
+            statusEl.style.color = initialRoomStatusColor;
+        }
     }
 }
 

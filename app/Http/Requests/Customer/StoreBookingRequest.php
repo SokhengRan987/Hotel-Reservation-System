@@ -26,6 +26,9 @@ class StoreBookingRequest extends FormRequest
             'start_date'  => 'required|date_format:Y-m-d',
             'end_date'    => 'required|date_format:Y-m-d|after:start_date',
             'guest_count' => 'required|integer|min:1|max:10',
+            'full_name'   => 'required|string|max:255',
+            'email'       => 'required|email|max:255',
+            'phone'       => 'required|string|max:50',
         ];
     }
 
@@ -47,6 +50,10 @@ class StoreBookingRequest extends FormRequest
             'guest_count.integer'     => 'Number of guests must be a whole number.',
             'guest_count.min'         => 'At least 1 guest is required.',
             'guest_count.max'         => 'Maximum 10 guests allowed.',
+            'full_name.required'      => 'Your name is required.',
+            'email.required'          => 'Your email address is required.',
+            'email.email'             => 'Please enter a valid email address.',
+            'phone.required'          => 'Your phone number is required.',
         ];
     }
 }

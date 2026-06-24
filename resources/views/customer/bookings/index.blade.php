@@ -46,6 +46,12 @@
                                         <span style="color:#aaa; font-weight:400; font-size:0.9rem;">#{{ $booking->room->number ?? '' }}</span>
                                     </div>
                                     <div style="color:#bbb; font-size:0.8rem;">Booking #{{ $booking->id }}</div>
+
+                                    <div style="color:#6b7280; font-size:0.85rem; margin-top:6px;">
+                                        <strong>Guest:</strong> {{ $booking->full_name ?? $booking->user->name }} ·
+                                        <strong>Email:</strong> {{ $booking->email ?? $booking->user->email }} ·
+                                        <strong>Phone:</strong> {{ $booking->phone ?? '—' }}
+                                    </div>
                                 </div>
                                 <span style="background:{{ $bg }}; color:{{ $text }}; padding:5px 14px; border-radius:20px; font-size:0.82rem; font-weight:600; white-space:nowrap;">
                                     {{ ucfirst(str_replace('_', ' ', $booking->status)) }}

@@ -67,7 +67,7 @@ Route::middleware('auth')
             Route::get('/bookings/{booking}', [BookingController::class, 'show'])->name('bookings.show');
 
             /*
-            PAYMENT FLOW: Step 2 - Select Payment Method
+            PAYMENT FLOW:  Select Payment Method
             User selects PayPal, Card, or ABA QR
             */
             Route::get('/bookings/{booking}/pay', [BookingController::class, 'payMethodForm'])
@@ -77,7 +77,7 @@ Route::middleware('auth')
                 ->name('bookings.pay.submit');
 
             /*
-            PAYMENT FLOW: Step 3 - Process Payment by Method
+            PAYMENT FLOW:- Process Payment by Method
             */
             Route::prefix('payment')
                 ->name('payment.')
@@ -146,6 +146,7 @@ Route::middleware(['auth', 'admin'])
     ->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
         Route::resource('rooms', AdminRoomController::class);
+       
         Route::resource('bookings', AdminBookingController::class);
         Route::resource('payments', AdminPaymentController::class);
     });

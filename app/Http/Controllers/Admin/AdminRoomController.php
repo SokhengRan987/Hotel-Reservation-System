@@ -37,18 +37,20 @@ class AdminRoomController extends Controller
             ? array_values(array_filter(array_map('trim', explode(',', $data['features']))))
             : null;
 
-        // Main image
+        // Main image fallback from uploaded images
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('rooms', 'public');
         }
 
-        // ✅ Multiple images
         if ($request->hasFile('images')) {
             $paths = [];
             foreach ($request->file('images') as $file) {
                 $paths[] = $file->store('rooms', 'public');
             }
             $data['images'] = $paths;
+            if (empty($data['image'])) {
+                $data['image'] = $paths[0] ?? null;
+            }
         }
 
         Room::create($data);
@@ -95,7 +97,6 @@ class AdminRoomController extends Controller
             $data['image'] = $request->file('image')->store('rooms', 'public');
         }
 
-        // ✅ Multiple images
         if ($request->hasFile('images')) {
             if ($room->images) {
                 foreach ($room->images as $old) {
@@ -104,11 +105,17 @@ class AdminRoomController extends Controller
                     }
                 }
             }
+
+            if ($room->image && Storage::disk('public')->exists($room->image)) {
+                Storage::disk('public')->delete($room->image);
+            }
+
             $paths = [];
             foreach ($request->file('images') as $file) {
                 $paths[] = $file->store('rooms', 'public');
             }
             $data['images'] = $paths;
+            $data['image'] = $paths[0] ?? null;
         }
 
         $room->update($data);
@@ -137,4 +144,6 @@ class AdminRoomController extends Controller
 
         return redirect()->route('admin.rooms.index')->with('success', 'Room deleted successfully.');
     }
+
+      
 }

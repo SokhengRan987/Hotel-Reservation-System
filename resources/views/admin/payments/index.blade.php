@@ -28,7 +28,7 @@
             <tbody>
                 @forelse ($payments as $payment)
                     <tr class="border-b hover:bg-gray-50 transition-colors">
-                        <td class="px-6 py-4 text-sm text-gray-800 font-medium">{{ $payment->booking->user->name }}</td>
+                        <td class="px-6 py-4 text-sm text-gray-800 font-medium">{{ $payment->booking->full_name ?? $payment->booking->user->name }}</td>
                         <td class="px-6 py-4 text-sm text-gray-800 font-medium">Room {{ $payment->booking->room->number }}</td>
                         <td class="px-6 py-4 text-sm text-gray-800 font-semibold">${{ number_format($payment->amount, 2) }}</td>
                         <td class="px-6 py-4 text-sm text-gray-600">{{ ucfirst($payment->provider) }}</td>

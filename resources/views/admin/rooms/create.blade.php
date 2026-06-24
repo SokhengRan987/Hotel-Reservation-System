@@ -100,173 +100,50 @@
                     </div>
                 </div>
 
-            {{-- Main Image (Thumbnail) --}}
-            <div style="background:#fffaf8; border-radius:14px; padding:28px; box-shadow:0 2px 8px rgba(0,0,0,0.07); margin-bottom:20px; border:1px solid #eae6f6;">
-                <h3 style="color:#1e3a8a; font-weight:700; margin:0 0 20px; padding-bottom:12px; border-bottom:2px solid #e5e7eb;">
-                    🖼️ Main Image (Cover Photo)
+            {{-- Images — single clean uploader --}}
+            <div style="background:#fffaf8; border-radius:14px; padding:22px; box-shadow:0 2px 8px rgba(0,0,0,0.06); margin-bottom:20px; border:1px solid #eae6f6;">
+                <h3 style="color:#1e3a8a; font-weight:700; margin:0 0 18px; padding-bottom:10px; border-bottom:2px solid #eae6f6;">
+                    📷 Room Images
                 </h3>
 
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; align-items:start;">
-                    <!-- Upload Area -->
-                    <div>
-                        <label style="font-weight:600; color:#374151; font-size:0.9rem; display:block; margin-bottom:12px;">
-                            Upload Main Image
-                            <span style="color:#6b7280; font-weight:400;">(JPG, PNG, GIF · Max 2MB)</span>
-                        </label>
-                        <div style="border:2px dashed #d1d5db; border-radius:12px; padding:20px; text-align:center; background:#f9fafb; cursor:pointer; transition:all 0.3s;" 
-                            onclick="document.getElementById('mainImageInput').click()"
-                            onmouseover="this.style.borderColor='#6366f1'; this.style.background='#f0f4ff';"
-                            onmouseout="this.style.borderColor='#d1d5db'; this.style.background='#f9fafb';">
-                            <div style="font-size:2.5rem; margin-bottom:8px;">📸</div>
-                            <div style="color:#6b7280; font-weight:500; margin-bottom:4px;">Click to upload</div>
-                            <div style="color:#9ca3af; font-size:0.85rem;">or drag and drop</div>
+                <div id="uploadArea"
+                     style="border:2px dashed #d1d5db; border-radius:12px; padding:20px; background:#f9fafb; min-height:140px;"
+                     ondragover="event.preventDefault(); this.style.borderColor='#6366f1';"
+                     ondragleave="this.style.borderColor='#d1d5db';"
+                     ondrop="handleDrop(event)">
+
+                    <div id="topBar" style="display:none; justify-content:space-between; align-items:center; margin-bottom:14px;">
+                        <span id="imageCount" style="color:#1e3a8a; font-weight:600; font-size:0.95rem;"></span>
+                        <div style="display:flex; gap:16px;">
+                            <span onclick="document.getElementById('allImagesInput').click()"
+                                  style="color:#4f46e5; font-weight:600; cursor:pointer; font-size:0.9rem;">+ Add more</span>
+                            <span onclick="clearAll()"
+                                  style="color:#ef4444; font-weight:600; cursor:pointer; font-size:0.9rem;">✕ Clear all</span>
                         </div>
-                        <input type="file" id="mainImageInput" name="image" accept="image/*" style="display:none;" onchange="previewMain(this)">
                     </div>
 
-                    <!-- Preview -->
-                    <div>
-                        <label style="font-weight:600; color:#374151; font-size:0.9rem; display:block; margin-bottom:12px;">
-                            Preview
-                        </label>
-                        <div id="mainImagePlaceholder" style="width:100%; aspect-ratio:16/9; background:linear-gradient(135deg,#e5e7eb,#d1d5db); border-radius:12px; display:flex; align-items:center; justify-content:center; color:#9ca3af; font-size:3rem;">
-                            🏨
-                        </div>
-                        <img id="mainImagePreviewImg" src="" alt="Preview" 
-                            style="display:none; width:100%; border-radius:12px; object-fit:cover; aspect-ratio:16/9; border:2px solid #e5e7eb;">
+                    <div id="previewGrid"
+                         style="display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:12px; margin-bottom:8px;">
+                    </div>
+
+                    <div id="emptyPlaceholder" style="text-align:center; padding:16px 0;">
+                        <div style="font-size:2rem;">🖼️</div>
+                        <div style="color:#6b7280; margin-top:8px; font-size:0.9rem;">Click or drag to upload new images</div>
+                        <div style="color:#9ca3af; font-size:0.8rem; margin-top:4px;">Up to 5 images · JPG, PNG, GIF · Max 2MB each</div>
+                        <button type="button" onclick="document.getElementById('allImagesInput').click()"
+                                style="margin-top:12px; background:#1e3a8a; color:white; border:none; padding:10px 24px; border-radius:8px; font-weight:600; cursor:pointer;">
+                            Choose Images
+                        </button>
+                    </div>
+
+                    <div id="dropHint" style="display:none; text-align:center; color:#9ca3af; font-size:0.8rem; margin-top:4px;">
+                        <span id="dropHintText"></span>
                     </div>
                 </div>
+
+                <input type="file" id="allImagesInput" name="images[]" accept="image/*" multiple style="display:none;"
+                       onchange="handleFiles(this.files)">
             </div>
-
-            {{-- Additional Images --}}
-        <div style="background:#fffaf8; border-radius:14px; padding:28px; box-shadow:0 2px 8px rgba(0,0,0,0.07); margin-bottom:20px; border:1px solid #eae6f6;">
-            <h3 style="color:#1e3a8a; font-weight:700; margin:0 0 20px; padding-bottom:12px; border-bottom:2px solid #e5e7eb;">
-                🖼️ Additional Images (Optional)
-            </h3>
-
-            <div id="uploadArea"
-                style="border:2px dashed #d1d5db; border-radius:12px; padding:20px; background:#f9fafb; min-height:160px;"
-                ondragover="event.preventDefault(); this.style.borderColor='#6366f1';"
-                ondragleave="this.style.borderColor='#d1d5db';"
-                ondrop="handleDrop(event)">
-
-                {{-- Top bar --}}
-                <div id="topBar" style="display:none; justify-content:space-between; align-items:center; margin-bottom:14px;">
-                    <span id="imageCount" style="color:#1e3a8a; font-weight:600; font-size:0.95rem;"></span>
-                    <div style="display:flex; gap:16px;">
-                        <span onclick="document.getElementById('allImagesInput').click()"
-                            style="color:#4f46e5; font-weight:600; cursor:pointer; font-size:0.9rem;">+ Add more</span>
-                        <span onclick="clearAll()"
-                            style="color:#ef4444; font-weight:600; cursor:pointer; font-size:0.9rem;">✕ Clear all</span>
-                    </div>
-                </div>
-
-                {{-- Preview grid --}}
-                <div id="previewGrid"
-                    style="display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:12px; margin-bottom:8px;">
-                </div>
-
-                {{-- Empty state --}}
-                <div id="emptyPlaceholder" style="text-align:center; padding:20px 0;">
-                    <div style="font-size:2.5rem;">🖼️</div>
-                    <div style="color:#6b7280; margin-top:8px; font-size:0.9rem;">Click or drag images here</div>
-                    <div style="color:#9ca3af; font-size:0.8rem; margin-top:4px;">Up to 5 images · JPG, PNG, GIF · Max 2MB each</div>
-                    <button type="button" onclick="document.getElementById('allImagesInput').click()"
-                            style="margin-top:14px; background:#1e3a8a; color:white; border:none; padding:10px 24px; border-radius:8px; font-weight:600; cursor:pointer;">
-                        Choose Images
-                    </button>
-                </div>
-
-                {{-- Drop hint --}}
-                <div id="dropHint" style="display:none; text-align:center; color:#9ca3af; font-size:0.8rem; margin-top:4px;">
-                    <span id="dropHintText"></span>
-                </div>
-            </div>
-
-            <input type="file" id="allImagesInput" name="images[]" accept="image/*" multiple style="display:none;"
-                onchange="handleFiles(this.files)">
-        </div>
-
-        <script>
-        let selectedFiles = [];
-        const MAX = 5;
-
-        function updateUI() {
-            const grid     = document.getElementById('previewGrid');
-            const topBar   = document.getElementById('topBar');
-            const empty    = document.getElementById('emptyPlaceholder');
-            const dropHint = document.getElementById('dropHint');
-            const countEl  = document.getElementById('imageCount');
-            const dropText = document.getElementById('dropHintText');
-
-            grid.innerHTML = '';
-
-            if (selectedFiles.length === 0) {
-                topBar.style.display   = 'none';
-                empty.style.display    = 'block';
-                dropHint.style.display = 'none';
-                return;
-            }
-
-            topBar.style.display   = 'flex';
-            empty.style.display    = 'none';
-            dropHint.style.display = 'block';
-            countEl.textContent    = selectedFiles.length + ' image' + (selectedFiles.length > 1 ? 's' : '') + ' selected';
-            dropText.textContent   = selectedFiles.length + '/' + MAX + ' images · drag more onto this area to add';
-
-            selectedFiles.forEach((file, i) => {
-                const reader = new FileReader();
-                reader.onload = e => {
-                    const wrap = document.createElement('div');
-                    wrap.style.cssText = 'position:relative; border-radius:10px; overflow:hidden; aspect-ratio:1; background:#e5e7eb;';
-                    wrap.innerHTML = `
-                        <img src="${e.target.result}" style="width:100%; height:100%; object-fit:cover; display:block;">
-                        ${i === 0 ? `<div style="position:absolute; bottom:6px; left:6px; background:#4f46e5; color:white; font-size:0.7rem; font-weight:700; padding:2px 10px; border-radius:20px;">Cover</div>` : ''}
-                        <button type="button" onclick="removeImage(${i})"
-                                style="position:absolute; top:5px; right:5px; background:rgba(0,0,0,0.55); color:white; border:none; border-radius:50%; width:22px; height:22px; font-size:0.75rem; cursor:pointer; font-weight:700; display:flex; align-items:center; justify-content:center;">✕</button>
-                    `;
-                    grid.appendChild(wrap);
-                };
-                reader.readAsDataURL(file);
-            });
-
-            // + Add tile
-            if (selectedFiles.length < MAX) {
-                const addTile = document.createElement('div');
-                addTile.onclick = () => document.getElementById('allImagesInput').click();
-                addTile.style.cssText = 'border:2px dashed #d1d5db; border-radius:10px; aspect-ratio:1; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer; color:#9ca3af; background:#f9fafb;';
-                addTile.innerHTML = '<span style="font-size:1.8rem;">+</span><span style="font-size:0.75rem; margin-top:4px;">Add</span>';
-                grid.appendChild(addTile);
-            }
-
-            // Sync to file input
-            const dt = new DataTransfer();
-            selectedFiles.forEach(f => dt.items.add(f));
-            document.getElementById('allImagesInput').files = dt.files;
-        }
-
-        function handleFiles(files) {
-            const toAdd = Array.from(files).slice(0, MAX - selectedFiles.length);
-            selectedFiles = [...selectedFiles, ...toAdd];
-            updateUI();
-        }
-
-        function removeImage(index) {
-            selectedFiles.splice(index, 1);
-            updateUI();
-        }
-
-        function clearAll() {
-            selectedFiles = [];
-            updateUI();
-        }
-
-        function handleDrop(event) {
-            event.preventDefault();
-            document.getElementById('uploadArea').style.borderColor = '#d1d5db';
-            handleFiles(event.dataTransfer.files);
-        }
-        </script>
 
         {{-- Submit --}}
         <div style="display:flex; gap:12px; justify-content:flex-end;">
@@ -284,44 +161,81 @@
 </div>
 
 <script>
-function previewMain(input) {
-    if (input.files && input.files[0]) {
-        const reader = new FileReader();
-        reader.onload = e => {
-            document.getElementById('mainImagePreviewImg').src = e.target.result;
-            document.getElementById('mainImagePreview').style.display = 'block';
-            document.getElementById('mainImagePlaceholder').style.display = 'none';
-        };
-        reader.readAsDataURL(input.files[0]);
+let selectedFiles = [];
+const MAX = 5;
+
+function updateUI() {
+    const grid     = document.getElementById('previewGrid');
+    const topBar   = document.getElementById('topBar');
+    const empty    = document.getElementById('emptyPlaceholder');
+    const dropHint = document.getElementById('dropHint');
+    const countEl  = document.getElementById('imageCount');
+    const dropText = document.getElementById('dropHintText');
+
+    grid.innerHTML = '';
+
+    if (selectedFiles.length === 0) {
+        topBar.style.display   = 'none';
+        empty.style.display    = 'block';
+        dropHint.style.display = 'none';
+        return;
     }
-}
 
-function previewExtras(input) {
-    const container = document.getElementById('extraPreviews');
-    container.innerHTML = '';
+    topBar.style.display   = 'flex';
+    empty.style.display    = 'none';
+    dropHint.style.display = 'block';
+    countEl.textContent    = selectedFiles.length + ' image' + (selectedFiles.length > 1 ? 's' : '') + ' selected';
+    dropText.textContent   = selectedFiles.length + '/' + MAX + ' images · drag more to add';
 
-    const files = Array.from(input.files).slice(0, 5);
-    if (files.length === 0) return;
-
-    container.style.display = 'grid';
-
-    files.forEach((file, i) => {
+    selectedFiles.forEach((file, i) => {
         const reader = new FileReader();
         reader.onload = e => {
-            const div = document.createElement('div');
-            div.style.cssText = 'position:relative; border-radius:8px; overflow:hidden; aspect-ratio:1;';
-            div.innerHTML = `
-                <img src="${e.target.result}"
-                     style="width:100%; height:100%; object-fit:cover; border-radius:8px; border:2px solid #e5e7eb;">
-                <div style="position:absolute; top:4px; right:4px; background:rgba(0,0,0,0.5); color:white; border-radius:50%; width:20px; height:20px; display:flex; align-items:center; justify-content:center; font-size:0.7rem; font-weight:700;">
-                    ${i + 1}
-                </div>
+            const wrap = document.createElement('div');
+            wrap.style.cssText = 'position:relative; border-radius:10px; overflow:hidden; aspect-ratio:1; background:#e5e7eb;';
+            wrap.innerHTML = `
+                <img src="${e.target.result}" style="width:100%; height:100%; object-fit:cover; display:block;">
+                ${i === 0 ? `<div style="position:absolute; bottom:6px; left:6px; background:#4f46e5; color:white; font-size:0.7rem; font-weight:700; padding:2px 10px; border-radius:20px;">Cover</div>` : ''}
+                <button type="button" onclick="removeImage(${i})"
+                        style="position:absolute; top:5px; right:5px; background:rgba(0,0,0,0.55); color:white; border:none; border-radius:50%; width:22px; height:22px; font-size:0.75rem; cursor:pointer; font-weight:700;">✕</button>
             `;
-            container.appendChild(div);
+            grid.appendChild(wrap);
         };
         reader.readAsDataURL(file);
     });
+
+    if (selectedFiles.length < MAX) {
+        const addTile = document.createElement('div');
+        addTile.onclick = () => document.getElementById('allImagesInput').click();
+        addTile.style.cssText = 'border:2px dashed #d1d5db; border-radius:10px; aspect-ratio:1; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer; color:#9ca3af; background:#f9fafb;';
+        addTile.innerHTML = '<span style="font-size:1.8rem;">+</span><span style="font-size:0.75rem; margin-top:4px;">Add</span>';
+        grid.appendChild(addTile);
+    }
+
+    const dt = new DataTransfer();
+    selectedFiles.forEach(f => dt.items.add(f));
+    document.getElementById('allImagesInput').files = dt.files;
+}
+
+function handleFiles(files) {
+    const toAdd = Array.from(files).slice(0, MAX - selectedFiles.length);
+    selectedFiles = [...selectedFiles, ...toAdd];
+    updateUI();
+}
+
+function removeImage(index) {
+    selectedFiles.splice(index, 1);
+    updateUI();
+}
+
+function clearAll() {
+    selectedFiles = [];
+    updateUI();
+}
+
+function handleDrop(event) {
+    event.preventDefault();
+    document.getElementById('uploadArea').style.borderColor = '#d1d5db';
+    handleFiles(event.dataTransfer.files);
 }
 </script>
-
 @endsection

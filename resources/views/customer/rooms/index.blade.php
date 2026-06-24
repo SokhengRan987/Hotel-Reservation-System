@@ -24,8 +24,11 @@
                         
                         <!-- Room Image -->
                         <div style="width: 100%; height: 250px; background: linear-gradient(135deg, #87CEEB, #FFB366); display: flex; align-items: center; justify-content: center; font-size: 3rem; color: white; overflow: hidden; position: relative;">
-                            @if($room->image)
-                                <img src="{{ asset('storage/'.$room->image) }}" alt="Room {{ $room->number }}" style="width: 100%; height: 100%; object-fit: cover;">
+                            @php
+                                $roomImage = $room->image ?? ($room->images[0] ?? null);
+                            @endphp
+                            @if($roomImage)
+                                <img src="{{ asset('storage/'.$roomImage) }}" alt="Room {{ $room->number }}" style="width: 100%; height: 100%; object-fit: cover;">
                             @else
                                 <i class="fas fa-door-open"></i>
                             @endif
@@ -58,7 +61,7 @@
 
                             <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
                                 <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                                    <span style="color: #666;">Max Guests</span>
+                                    <span style="color: #666666;">Max Guests</span>
                                     <span style="font-weight: 700; color: #1e3c72;">{{ $room->max_adults }} Adults</span>
                                 </div>
                                 <div style="display: flex; justify-content: space-between;">

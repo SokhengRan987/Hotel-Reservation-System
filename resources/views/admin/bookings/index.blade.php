@@ -30,8 +30,8 @@
             <tbody>
                 @forelse ($bookings as $booking)
                     <tr class="border-b hover:bg-gray-50 transition-colors">
-                        <td class="px-6 py-4 text-sm text-gray-800 font-medium">{{ $booking->user->name }}</td>
-                        <td class="px-6 py-4 text-sm text-gray-600">{{ $booking->user->email }}</td>
+                        <td class="px-6 py-4 text-sm text-gray-800 font-medium">{{ $booking->full_name ?? $booking->user->name }}</td>
+                        <td class="px-6 py-4 text-sm text-gray-600">{{ $booking->email ?? $booking->user->email }}</td>
                         <td class="px-6 py-4 text-sm text-gray-800 font-medium">Room {{ $booking->room->number }}</td>
                         <td class="px-6 py-4 text-sm text-gray-600">{{ $booking->start_date->format('M d, Y') }}</td>
                         <td class="px-6 py-4 text-sm text-gray-600">{{ $booking->end_date->format('M d, Y') }}</td>

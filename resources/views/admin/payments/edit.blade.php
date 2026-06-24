@@ -26,11 +26,15 @@
         <div style="display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px;">
             <div>
                 <p style="font-size:0.85rem; color:#6b7280; margin-bottom:6px;">Guest Name</p>
-                <p style="font-size:1rem; font-weight:700; color:#111827;">{{ $payment->booking->user->name }}</p>
+                <p style="font-size:1rem; font-weight:700; color:#111827;">{{ $payment->booking->full_name ?? $payment->booking->user->name }}</p>
             </div>
             <div>
                 <p style="font-size:0.85rem; color:#6b7280; margin-bottom:6px;">Email</p>
-                <p style="font-size:1rem; font-weight:700; color:#111827;">{{ $payment->booking->user->email }}</p>
+                <p style="font-size:1rem; font-weight:700; color:#111827;">{{ $payment->booking->email ?? $payment->booking->user->email }}</p>
+            </div>
+            <div>
+                <p style="font-size:0.85rem; color:#6b7280; margin-bottom:6px;">Phone</p>
+                <p style="font-size:1rem; font-weight:700; color:#111827;">{{ $payment->booking->phone ?? '—' }}</p>
             </div>
             <div>
                 <p style="font-size:0.85rem; color:#6b7280; margin-bottom:6px;">Room</p>
