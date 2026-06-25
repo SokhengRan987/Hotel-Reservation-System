@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Customer\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Customer\RoomController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminRoomController;
 use App\Http\Controllers\Admin\AdminBookingController;
 use App\Http\Controllers\Admin\AdminPaymentController;
+
 use App\Models\User;
 
 /*
@@ -32,7 +34,7 @@ Route::get('/redirect', function () {
 | PUBLIC ROUTES
 |--------------------------------------------------------------------------
 */
-Route::get('/', [RoomController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::prefix('rooms')
     ->name('customer.rooms.')
@@ -67,7 +69,7 @@ Route::middleware('auth')
             Route::get('/bookings/{booking}', [BookingController::class, 'show'])->name('bookings.show');
 
             /*
-            PAYMENT FLOW:  Select Payment Method
+            PAYMENT  Select Payment Method
             User selects PayPal, Card, or ABA QR
             */
             Route::get('/bookings/{booking}/pay', [BookingController::class, 'payMethodForm'])
@@ -111,7 +113,7 @@ Route::middleware('auth')
                 });
 
             /*
-            PAYMENT FLOW: Step 4 - Success Page
+            PAYMENT  - Success Page
             */
             Route::get('/bookings/{booking}/success', function ($booking) {
                 if (is_string($booking)) {

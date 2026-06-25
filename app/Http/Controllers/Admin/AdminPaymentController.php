@@ -48,3 +48,4 @@ class AdminPaymentController extends Controller
         return redirect()->route('admin.payments.index')->with('success', 'Payment deleted successfully.');
     }
 }
+

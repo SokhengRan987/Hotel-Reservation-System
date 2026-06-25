@@ -13,7 +13,7 @@
         </div>
         <a href="{{ route('admin.rooms.index') }}"
            style="background:#f3f4f6; color:#374151; padding:10px 20px; border-radius:8px; text-decoration:none; font-weight:600; font-size:0.9rem;">
-            ← Back to Rooms
+            Back to Rooms
         </a>
     </div>
 

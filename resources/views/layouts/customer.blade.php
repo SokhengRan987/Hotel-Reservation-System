@@ -10,8 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --brand-dark: #02081c;
-            --brand-navy: #07132f;
+            
             --brand-gold: #d7aa46;
             --brand-light: #f8f3e8;
             --brand-soft: rgba(215, 170, 70, 0.15);
@@ -25,7 +24,7 @@
         }
 
         .custom-navbar {
-            background: rgba(4, 12, 29, 0.96);
+            background:
             padding: 18px 0;
             border-bottom: 1px solid rgba(215, 170, 70, 0.18);
             box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
@@ -101,7 +100,7 @@
         }
 
         .footer {
-            background: #050a18;
+            background:#071437; (4, 12, 29, 0.96);
             padding: 60px 0 20px;
             color: rgba(255, 255, 255, 0.85);
             border-top: 1px solid rgba(215, 170, 70, 0.16);
@@ -193,7 +192,7 @@
                 <span class="brand-name">Sunset Heaven</span>
             </div>
             <div class="d-none d-md-flex">
-               <a href="{{ route('customer.rooms.index') }}" class="nav-link">Home</a>
+                <a href="{{ route('home') }}" class="nav-link">Home</a>
                 <a href="{{ route('customer.rooms.index') }}" class="nav-link">Our Rooms</a>
                 <a href="{{ route('customer.bookings.index') }}" class="nav-link">Booking Tracker</a>
             </div>
@@ -243,7 +242,7 @@
                 <!-- Quick Links -->
                 <div class="footer-section footer-links">
                     <h3>Quick Links</h3>
-                    <a href="{{ route('home') }}">Home</a>
+                    <a href="{{ route('home') }}" class="nav-link">Home</a>
                     <a href="{{ route('customer.rooms.index') }}">Rooms</a>
                     <a href="{{ route('customer.bookings.index') }}">Booking Tracker</a>
                     <a href="#">Contact Us</a>
@@ -254,7 +253,11 @@
                     <h3>Contact Us</h3>
                     <p>📞 Phone: <strong>0965109851</strong></p>
                     <p>✉ Email: <strong>Sunsethaven1011@gmail.com</strong></p>
-                    <p>📍 Location: Beach, Kompot Sunset ,koh kongkrav</p>
+                    <p>📍 Location:
+                        <a href="https://maps.app.goo.gl/zUewaG6kdAbTySY29?g_st=it"
+                         target="_blank"
+                        style="color:#3780d4; text-decoration:none;">
+                        heaven,resort,Koh Kong Krav.map</a> </p>
                 </div>
             </div>
 

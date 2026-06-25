@@ -1,7 +1,7 @@
 <x-guest-layout>
     <style>
         body {
-            background:rgb(211, 183, 113);
+            background: linear-gradient(135deg, #02081c 0%, #07132f 100%);
             background-attachment: fixed;
             min-height: 100vh;
             position: relative;
@@ -15,18 +15,18 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-image: whitesmoke
+            background-image:
                 repeating-linear-gradient(
                     90deg,
-                    rgba(255,255,255,0.03) 0px,
-                    rgba(255,255,255,0.03) 1px,
+                    rgba(215,170,70,0.03) 0px,
+                    rgba(215,170,70,0.03) 1px,
                     transparent 1px,
                     transparent 40px
                 ),
                 repeating-linear-gradient(
                     0deg,
-                    rgba(255,255,255,0.03) 0px,
-                    rgba(255,255,255,0.03) 1px,
+                    rgba(215,170,70,0.03) 0px,
+                    rgba(215,170,70,0.03) 1px,
                     transparent 1px,
                     transparent 40px
                 );  
@@ -60,7 +60,7 @@
 
         .forgot-card {
             background: rgba(30, 60, 114, 0.25);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(215, 170, 70, 0.12);
             backdrop-filter: blur(10px);
             border-radius: 20px;
             padding: 50px 40px;

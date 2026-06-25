@@ -5,11 +5,12 @@
 @extends('layouts.customer')
 
 @section('content')
-<div style="background: linear-gradient(135deg, #e3f2fd 0%, #fff3e0 100%); padding: 60px 0; min-height: 100vh;">
+            
+<div style="background: #07132f; padding: 60px 0; min-height: 100vh;">
     <div class="container">
-
+        <!-- page book form  -->
         <!-- Back Button -->
-        <a href="{{ route('customer.rooms.index') }}" style="display: inline-block; color: #1e3c72; font-weight: 600; margin-bottom: 30px;">
+        <a href="{{ route('customer.rooms.index') }}" style="display: inline-block; color: #f3f5f9; font-weight: 600; margin-bottom: 30px;">
             <i class="fas fa-arrow-left"></i> Back to Rooms
         </a>
 

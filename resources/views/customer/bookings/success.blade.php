@@ -1,7 +1,7 @@
 @extends('layouts.customer')
 
 @section('content')
-<div style="background: linear-gradient(135deg, #e3f2fd 0%, #fff3e0 100%); padding: 80px 0; min-height: 100vh; display: flex; align-items: center;">
+<div style="background: linear-gradient(135deg, white 0%, #1e3c72 100%); padding: 80px 0; min-height: 100vh; display: flex; align-items: center;">
     <div class="container">
 
         <div class="row justify-content-center">

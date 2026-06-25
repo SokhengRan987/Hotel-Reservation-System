@@ -1,7 +1,7 @@
 <x-guest-layout>
     <style>
         body {
-            background:rgb(96, 185, 205);
+            background: linear-gradient(135deg, #02081c 0%, #07132f 100%);
             background-attachment: fixed;
             min-height: 100vh;
             position: relative;
@@ -15,7 +15,21 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-image:rgb(96, 185, 205);
+            background-image:
+                repeating-linear-gradient(
+                    90deg,
+                    rgba(215,170,70,0.03) 0px,
+                    rgba(215,170,70,0.03) 1px,
+                    transparent 1px,
+                    transparent 40px
+                ),
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(215,170,70,0.03) 0px,
+                    rgba(215,170,70,0.03) 1px,
+                    transparent 1px,
+                    transparent 40px
+                );
                 
             pointer-events: none;
             z-index: 1;
@@ -47,7 +61,7 @@
 
         .login-card {
             background: rgba(30, 60, 114, 0.25);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(215, 170, 70, 0.12);
             backdrop-filter: blur(10px);
             border-radius: 20px;
             padding: 50px 40px;
@@ -74,7 +88,7 @@
             width: 100%;
             padding: 16px 20px;
             padding-left: 45px;
-            border: rgb(96, 185, 205);
+            border: 1px solid rgba(215, 170, 70, 0.3);
             border-radius: 50px;
             background: rgba(255, 255, 255, 0.1);
             color: white;
@@ -90,9 +104,9 @@
 
         .form-input:focus {
             outline: none;
-            border-color: rgba(255, 255, 255, 0.6);
+            border-color: rgba(215, 170, 70, 0.8);
             background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 0 20px rgba(255, 200, 100, 0.2);
+            box-shadow: 0 0 20px rgba(215, 170, 70, 0.3);
         }
 
         .input-icon {

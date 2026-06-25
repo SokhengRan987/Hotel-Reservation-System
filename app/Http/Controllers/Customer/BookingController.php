@@ -12,7 +12,7 @@ use Carbon\Carbon;
 
 class BookingController extends Controller
 {
-    // ✅ FIX 1: This method was MISSING — caused the 401 error
+
     public function index()
     {
         $bookings = Booking::with(['room', 'payment'])
