@@ -10,7 +10,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            
+            --brand-dark: #07132f;
+            --brand-navy: #07132f;
             --brand-gold: #d7aa46;
             --brand-light: #f8f3e8;
             --brand-soft: rgba(215, 170, 70, 0.15);
@@ -24,7 +25,7 @@
         }
 
         .custom-navbar {
-            background:
+            background: transparent;
             padding: 18px 0;
             border-bottom: 1px solid rgba(215, 170, 70, 0.18);
             box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
@@ -100,7 +101,7 @@
         }
 
         .footer {
-            background:#071437; (4, 12, 29, 0.96);
+            background: transparent;
             padding: 60px 0 20px;
             color: rgba(255, 255, 255, 0.85);
             border-top: 1px solid rgba(215, 170, 70, 0.16);

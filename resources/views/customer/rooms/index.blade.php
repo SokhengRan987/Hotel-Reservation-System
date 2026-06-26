@@ -3,9 +3,9 @@
 @section('content')
 
 {{-- Page Header --}}
-<section style="background:linear-gradient(135deg,#02081c 0%,#07132f 100%); padding:80px 0 50px; border-bottom:1px solid rgba(215,170,70,0.15);">
+<section style="background:rgb(129, 123, 123);">
     <div class="container" style="text-align:center;">
-        <span style="color:#d7aa46; font-size:0.78rem; font-weight:700; letter-spacing:3px; text-transform:uppercase;">Our Accommodations</span>
+        <span style="color:#d7aa46; font-size:0.78rem; font-weight:100; letter-spacing:1px; line-height:1.0; text-transform:uppercase;">Our Accommodations</span>
         <h1 style="font-family:'Times New Roman',serif; font-size:clamp(2.2rem,5vw,3.5rem); color:white; margin:16px 0 12px;">Our Exquisite Rooms</h1>
         <div style="width:60px; height:2px; background:linear-gradient(90deg,transparent,#d7aa46,transparent); margin:0 auto 20px;"></div>
         <p style="color:rgba(255,255,255,0.6); font-size:1rem; max-width:520px; margin:0 auto;">
@@ -82,7 +82,7 @@
 
                             {{-- Button --}}
                             @if($isBooked)
-                                <div style="width:100%; background:rgba(255,255,255,0.06); color:rgba(255,255,255,0.3); padding:12px; text-align:center; border-radius:4px; font-weight:600; cursor:not-allowed; font-size:0.88rem; letter-spacing:1px;">
+                                <div style="background:rgba(255,255,255,0.06); color:rgba(255,255,255,0.3); padding:12px; text-align:center; border-radius:4px; font-weight:600; cursor:not-allowed; font-size:0.88rem; letter-spacing:1px;">
                                     NOT AVAILABLE
                                 </div>
                             @else

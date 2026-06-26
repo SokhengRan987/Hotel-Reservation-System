@@ -25,7 +25,7 @@ class Booking extends Model
     public function user()    { return $this->belongsTo(User::class); }
     public function payment() { return $this->hasOne(Payment::class); }
 
-    // ✅ FIX: This accessor was MISSING — caused error on pay.blade.php
+    //  This accessor was MISSING — caused error on pay.blade.php
     public function getNightsAttribute(): int
     {
         return $this->start_date->diffInDays($this->end_date);

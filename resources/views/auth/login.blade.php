@@ -1,52 +1,9 @@
 <x-guest-layout>
     <style>
         body {
-            background: linear-gradient(135deg, #02081c 0%, #07132f 100%);
+            background: linear-gradient(135deg, #374679 0%, #abb2c4 100%);
             background-attachment: fixed;
             min-height: 100vh;
-            position: relative;
-            overflow-x: hidden;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image:
-                repeating-linear-gradient(
-                    90deg,
-                    rgba(215,170,70,0.03) 0px,
-                    rgba(215,170,70,0.03) 1px,
-                    transparent 1px,
-                    transparent 40px
-                ),
-                repeating-linear-gradient(
-                    0deg,
-                    rgba(215,170,70,0.03) 0px,
-                    rgba(215,170,70,0.03) 1px,
-                    transparent 1px,
-                    transparent 40px
-                );
-                
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        body::after {
-            content: '';
-            position: fixed;
-            top: 2%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, rgba(255,200,100,0.15) 0%, transparent 70%);
-            filter: blur(40px);
-            z-index: 0;
-            pointer-events: none;
         }
 
         .auth-container {
@@ -60,42 +17,37 @@
         }
 
         .login-card {
-            background: rgba(30, 60, 114, 0.25);
-            border: 1px solid rgba(215, 170, 70, 0.12);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 50px 40px;
+            background: rgba(15, 25, 55, 0.92);
+            border: 1px solid rgba(215, 170, 70, 0.18);
+            border-radius: 24px;
+            padding: 40px;
             width: 100%;
             max-width: 420px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 20px 50px rgba(0,0,0,.45);
         }
 
         .login-card h1 {
             text-align: center;
             color: white;
-            font-size: 36px;
-            font-weight: 700;
-            margin-bottom: 40px;
-            letter-spacing: -0.5px;
+            font-size: 48px;
+            font-family: 'Times New Roman', serif;
+            margin-bottom: 35px;
         }
 
         .form-group {
             margin-bottom: 25px;
-            position: relative;
+            position: relative;  /* ← needed for icon positioning */
         }
 
         .form-input {
             width: 100%;
-            padding: 16px 20px;
-            padding-left: 45px;
-            border: 1px solid rgba(215, 170, 70, 0.3);
-            border-radius: 50px;
-            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 18px 15px 48px;
+            border: 1px solid rgba(215,170,70,.25);
+            border-radius: 12px;
+            background: rgba(255,255,255,.06);
             color: white;
             font-size: 15px;
-            font-weight: 400;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
+            box-sizing: border-box;
         }
 
         .form-input::placeholder {
@@ -110,7 +62,7 @@
         }
 
         .input-icon {
-            position: absolute;
+            position: absolute;  /* ← was "fixed", which broke icon placement */
             left: 16px;
             top: 50%;
             transform: translateY(-50%);
@@ -161,16 +113,15 @@
 
         .login-btn {
             width: 100%;
-            padding: 14px 20px;
-            background: white;
-            color: #1e3c72;
+            padding: 15px;
+            background: linear-gradient(135deg, #d7aa46, #f3d27b);
+            color: #07132f;
             border: none;
-            border-radius: 50px;
+            border-radius: 12px;
             font-size: 16px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+            transition: all 0.2s ease;
         }
 
         .login-btn:hover {
@@ -224,7 +175,6 @@
         <div class="login-card">
             <h1>Login</h1>
 
-            <!-- Session Status -->
             @if (session('status'))
                 <div class="status-message">{{ session('status') }}</div>
             @endif
@@ -232,25 +182,24 @@
             <form method="POST" action="{{ route('login') }}">
                 @csrf
 
-                <!-- Email Address -->
                 <div class="form-group">
                     <span class="input-icon">✉️</span>
-                    <input type="email" id="email" name="email" class="form-input" placeholder="Email" value="{{ old('email') }}" required autofocus autocomplete="username">
+                    <input type="email" id="email" name="email" class="form-input"
+                        placeholder="Email" value="{{ old('email') }}" required autofocus autocomplete="username">
                     @if ($errors->has('email'))
                         <div class="error-message">{{ $errors->first('email') }}</div>
                     @endif
                 </div>
 
-                <!-- Password -->
                 <div class="form-group">
                     <span class="input-icon">🔒</span>
-                    <input type="password" id="password" name="password" class="form-input" placeholder="Password" required autocomplete="current-password">
+                    <input type="password" id="password" name="password" class="form-input"
+                        placeholder="Password" required autocomplete="current-password">
                     @if ($errors->has('password'))
                         <div class="error-message">{{ $errors->first('password') }}</div>
                     @endif
                 </div>
 
-                <!-- Remember Me & Forgot Password -->
                 <div class="remember-forgot">
                     <label class="remember-me">
                         <input type="checkbox" name="remember">
@@ -261,10 +210,8 @@
                     @endif
                 </div>
 
-                <!-- Submit Button -->
                 <button type="submit" class="login-btn">Login</button>
 
-                <!-- Register Link -->
                 <div class="register-link">
                     Don't have an account? <a href="{{ route('register') }}">Register</a>
                 </div>

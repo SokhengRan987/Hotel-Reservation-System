@@ -1,7 +1,7 @@
 <x-guest-layout>
     <style>
         body {
-            background: linear-gradient(135deg, #02081c 0%, #07132f 100%);
+            background:linear-gradient(135deg, #374679 0%, #abb2c4 100%);
             background-attachment: fixed;
             min-height: 100vh;
             position: relative;
@@ -11,26 +11,10 @@
         body::before {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             background-image:
-                repeating-linear-gradient(
-                    90deg,
-                    rgba(215,170,70,0.03) 0px,
-                    rgba(215,170,70,0.03) 1px,
-                    transparent 1px,
-                    transparent 40px
-                ),
-                repeating-linear-gradient(
-                    0deg,
-                    rgba(215,170,70,0.03) 0px,
-                    rgba(215,170,70,0.03) 1px,
-                    transparent 1px,
-                    transparent 40px
-                );  
-             
+                repeating-linear-gradient(90deg, rgba(215,170,70,0.03) 0px, rgba(215,170,70,0.03) 1px, transparent 1px, transparent 40px),
+                repeating-linear-gradient(0deg, rgba(215,170,70,0.03) 0px, rgba(215,170,70,0.03) 1px, transparent 1px, transparent 40px);
             pointer-events: none;
             z-index: 1;
         }
@@ -41,10 +25,10 @@
             top: 2%;
             left: 50%;
             transform: translateX(-50%);
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, rgba(255,200,100,0.15) 0%, transparent 70%);
-            filter: blur(40px);
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(215,170,70,0.12) 0%, transparent 70%);
+            filter: blur(50px);
             z-index: 0;
             pointer-events: none;
         }
@@ -60,23 +44,22 @@
         }
 
         .register-card {
-            background: rgba(30, 60, 114, 0.25);
-            border: 1px solid rgba(215, 170, 70, 0.12);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 50px 40px;
+            background: rgba(15, 25, 55, 0.92);
+            border: 1px solid rgba(215, 170, 70, 0.18);
+            border-radius: 24px;
+            padding: 40px;
             width: 100%;
             max-width: 420px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 20px 50px rgba(0,0,0,.45);
         }
 
         .register-card h1 {
             text-align: center;
             color: white;
-            font-size: 36px;
+            font-size: 48px;
+            font-family: 'Times New Roman', serif;
+            margin-bottom: 35px;
             font-weight: 700;
-            margin-bottom: 40px;
-            letter-spacing: -0.5px;
         }
 
         .form-group {
@@ -86,16 +69,14 @@
 
         .form-input {
             width: 100%;
-            padding: 14px 20px;
-            padding-left: 45px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50px;
-            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 18px 15px 48px;
+            border: 1px solid rgba(215,170,70,.25);
+            border-radius: 12px;
+            background: rgba(255,255,255,.06);
             color: white;
-            font-size: 14px;
-            font-weight: 400;
+            font-size: 15px;
+            box-sizing: border-box;
             transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
         }
 
         .form-input::placeholder {
@@ -104,9 +85,9 @@
 
         .form-input:focus {
             outline: none;
-            border-color: rgba(255, 255, 255, 0.6);
+            border-color: rgba(215, 170, 70, 0.8);
             background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 0 20px rgba(255, 200, 100, 0.2);
+            box-shadow: 0 0 20px rgba(215, 170, 70, 0.3);
         }
 
         .input-icon {
@@ -114,24 +95,23 @@
             left: 16px;
             top: 50%;
             transform: translateY(-50%);
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 18px;
+            font-size: 16px;
             pointer-events: none;
+            line-height: 1;
         }
 
         .register-btn {
             width: 100%;
-            padding: 14px 20px;
-            background: white;
-            color: #1e3c72;
+            padding: 15px;
+            background: linear-gradient(135deg, #d7aa46, #f3d27b);
+            color: #07132f;
             border: none;
-            border-radius: 50px;
+            border-radius: 12px;
             font-size: 16px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
-            margin-top: 20px;
+            transition: all 0.2s ease;
+            margin-top: 10px;
         }
 
         .register-btn:hover {
@@ -186,7 +166,7 @@
                     @endif
                 </div>
 
-                <!-- Email Address -->
+                <!-- Email -->
                 <div class="form-group">
                     <span class="input-icon">✉️</span>
                     <input type="email" id="email" name="email" class="form-input" placeholder="Email" value="{{ old('email') }}" required autocomplete="username">
@@ -213,10 +193,8 @@
                     @endif
                 </div>
 
-                <!-- Submit Button -->
                 <button type="submit" class="register-btn">Register</button>
 
-                <!-- Login Link -->
                 <div class="login-link">
                     Already have an account? <a href="{{ route('login') }}">Login</a>
                 </div>

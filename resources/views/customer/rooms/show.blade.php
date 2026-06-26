@@ -6,7 +6,7 @@
 
 @section('content')
             
-<div style="background: #07132f; padding: 60px 0; min-height: 100vh;">
+<div style="background: #8d8e90; padding: 60px 0; min-height: 100vh;">
     <div class="container">
         <!-- page book form  -->
         <!-- Back Button -->
@@ -76,6 +76,7 @@
                         <i class="fas fa-tag"></i> {{ $room->type ?? 'Premium Room' }}
                     </p>
 
+
                     <!-- Price -->
                     <div style="background:linear-gradient(135deg,#1e3c72,#2a5298); color:white; padding:20px; border-radius:10px; text-align:center; margin:25px 0;">
                         <small>Price Per Night</small>
@@ -87,6 +88,16 @@
                         <strong style="color:#374151;">Max Guests:</strong>
                         <span style="color:#111827; font-weight:700;"> {{ $room->capacity ?? 1 }}</span>
                         <br>
+                    
+                    {{-- ADD description --}}
+                         @if($room->description)
+                            <div style="margin-top:12px; padding-top:12px; border-top:1px solid #e5e7eb;">
+                                <strong style="color:#374151;">Description:</strong>
+                                <p style="color:#555; margin-top:6px; line-height:1.7; margin-bottom:0;">
+                                    {{ $room->description }}
+                                </p>
+                            </div>
+                        @endif
                         @php
                             $isBooked = $room->bookings()
                                 ->whereIn('status', ['pending', 'confirmed', 'checked_in'])

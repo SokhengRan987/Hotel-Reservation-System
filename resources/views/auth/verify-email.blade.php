@@ -1,7 +1,7 @@
 <x-guest-layout>
     <style>
         body {
-            background: linear-gradient(135deg, #02081c 0%, #07132f 100%);
+            background: linear-gradient(135deg, #374679 0%, #abb2c4 100%);
             background-attachment: fixed;
             min-height: 100vh;
             position: relative;
@@ -11,25 +11,10 @@
         body::before {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             background-image:
-                repeating-linear-gradient(
-                    90deg,
-                    rgba(215,170,70,0.03) 0px,
-                    rgba(215,170,70,0.03) 1px,
-                    transparent 1px,
-                    transparent 40px
-                ),
-                repeating-linear-gradient(
-                    0deg,
-                    rgba(215,170,70,0.03) 0px,
-                    rgba(215,170,70,0.03) 1px,
-                    transparent 1px,
-                    transparent 40px
-                );  
+                repeating-linear-gradient(90deg, rgba(215,170,70,0.03) 0px, rgba(215,170,70,0.03) 1px, transparent 1px, transparent 40px),
+                repeating-linear-gradient(0deg, rgba(215,170,70,0.03) 0px, rgba(215,170,70,0.03) 1px, transparent 1px, transparent 40px);
             pointer-events: none;
             z-index: 1;
         }
@@ -59,84 +44,80 @@
         }
 
         .verify-card {
-            background: rgba(30, 60, 114, 0.25);
-            border: 1px solid rgba(215, 170, 70, 0.12);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 50px 40px;
+            background: rgba(15, 25, 55, 0.92);
+            border: 1px solid rgba(215, 170, 70, 0.18);
+            border-radius: 24px;
+            padding: 40px;
             width: 100%;
             max-width: 420px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 20px 50px rgba(0,0,0,.45);
         }
 
         .verify-card h1 {
             text-align: center;
             color: white;
-            font-size: 36px;
-            font-weight: 700;
+            font-size: 48px;
+            font-family: 'Times New Roman', serif;
             margin-bottom: 20px;
-            letter-spacing: -0.5px;
         }
 
         .description {
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255,255,255,0.7);
             font-size: 13px;
             text-align: center;
-            margin-bottom: 35px;
+            margin-bottom: 30px;
             line-height: 1.6;
         }
 
         .button-group {
             display: flex;
-            gap: 12px;
             flex-direction: column;
+            gap: 12px;
         }
 
         .submit-btn {
             width: 100%;
-            padding: 14px 20px;
-            background: white;
-            color: #1e3c72;
+            padding: 15px;
+            background: linear-gradient(135deg, #d7aa46, #f3d27b);
+            color: #07132f;
             border: none;
-            border-radius: 50px;
-            font-size: 15px;
-            font-weight: 600;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+            transition: all 0.2s ease;
         }
 
         .submit-btn:hover {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255,255,255,0.95);
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
+            box-shadow: 0 6px 20px rgba(255,255,255,0.3);
         }
 
-        .submit-btn:active {
-            transform: translateY(0);
-        }
+        .submit-btn:active { transform: translateY(0); }
 
         .logout-btn {
             width: 100%;
-            padding: 14px 20px;
-            background: rgba(255, 100, 100, 0.15);
-            color: rgba(255, 200, 100, 0.9);
-            border: 1px solid rgba(255, 100, 100, 0.3);
-            border-radius: 50px;
+            padding: 15px;
+            background: transparent;
+            color: rgba(255,255,255,0.7);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 12px;
             font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
         }
 
         .logout-btn:hover {
-            background: rgba(255, 100, 100, 0.25);
-            border-color: rgba(255, 100, 100, 0.5);
+            background: rgba(255,100,100,0.15);
+            border-color: rgba(255,100,100,0.4);
+            color: #ff9999;
         }
 
         .status-message {
-            background: rgba(76, 175, 80, 0.2);
-            border: 1px solid rgba(76, 175, 80, 0.4);
+            background: rgba(76,175,80,0.2);
+            border: 1px solid rgba(76,175,80,0.4);
             color: #a8e6a8;
             padding: 12px 15px;
             border-radius: 10px;

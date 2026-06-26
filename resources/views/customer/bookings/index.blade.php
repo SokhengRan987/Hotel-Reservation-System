@@ -1,11 +1,11 @@
 @extends('layouts.customer')
 
 @section('content')
-<div style="background:#07132f; padding: 60px 0; min-height: 100vh;">
+<div style="background:#06122d; padding: 60px 0; min-height: 100vh;">
     <div class="container">
 
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 style="color:rgb(60, 89, 192); font-weight:800;">My Bookings</h1>
+            <h1 style="color:rgb(204, 206, 212); font-weight:600; font-size:1.5rem;">My Bookings</h1>
             <a href="{{ route('customer.rooms.index') }}"
                style="background:#1e3c72; color:white; padding:10px 24px; border-radius:10px; text-decoration:none; font-weight:600;">
                 + Book a Room

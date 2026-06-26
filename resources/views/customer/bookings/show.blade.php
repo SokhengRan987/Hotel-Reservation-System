@@ -1,11 +1,11 @@
 @extends('layouts.customer')
 
 @section('content')
-<div style="background: linear-gradient(135deg, white 0%, #1e3c72 100%); padding: 60px 0; min-height: 100vh;">
+<div style="background: #07132f; padding: 100px 0; min-height: 80vh; display: flex; align-items: center;">
     <div class="container">
 
         <!-- Back Button -->
-        <a href="{{ route('customer.rooms.index') }}" style="display: inline-block; color: #1e3c72; font-weight: 600; margin-bottom: 30px;">
+        <a href="{{ route('customer.rooms.index') }}" style="display: inline-block; color: #e5e8ef; font-weight: 800; margin-bottom: 30px; margin-top:20px;">
             <i class="fas fa-arrow-left"></i> Back to Rooms
         </a>
 
